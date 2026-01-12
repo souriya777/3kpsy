@@ -1,0 +1,22 @@
+{
+  "name": "3kpsy",
+  "version": "0.1.0",
+  "description": "Application PWA pour tracker des métriques quotidiennes avec objectifs progressifs",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "@sveltejs/vite-plugin-svelte": "^5.0.3",
+    "svelte": "^5.18.2",
+    "vite": "^6.0.11",
+    "sass": "^1.85.0"
+  },
+  "dependencies": {
+    "firebase": "^11.2.0",
+    "chart.js": "^4.4.8",
+    "svelte-chartjs": "^3.1.5"
+  }
+}

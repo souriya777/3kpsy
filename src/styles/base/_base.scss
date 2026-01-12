@@ -1,0 +1,170 @@
+:root {
+  // ========================================
+  // COLORS (hex)
+  // ========================================
+  --color-primary: #ca3c66;
+  --color-text: #ffffff;
+  --color-accent: #ff6b9d;
+  --color-success: #4caf50;
+  --color-warning: #ff9800;
+  --color-error: #f44336;
+
+  // ========================================
+  // COLORS (rgb) - pour opacité dynamique
+  // ========================================
+  --color-white-rgb: 255, 255, 255;
+  --color-black-rgb: 0, 0, 0;
+  --color-primary-rgb: 202, 60, 102;
+
+  // ========================================
+  // COLORS (rgba) - couleurs avec opacité
+  // ========================================
+  --color-overlay: rgba(var(--color-black-rgb), 0.5);
+  --color-overlay-light: rgba(var(--color-black-rgb), 0.3);
+  --color-border: rgba(var(--color-white-rgb), 0.2);
+  --color-border-hover: rgba(var(--color-white-rgb), 0.4);
+  --color-hover-bg: rgba(var(--color-white-rgb), 0.1);
+  --color-active-bg: rgba(var(--color-white-rgb), 0.15);
+
+  // ========================================
+  // SPACING (x4/8 rule)
+  // ========================================
+  --space-4: 0.4rem;
+  --space-8: 0.8rem;
+  --space-12: 1.2rem;
+  --space-16: 1.6rem;
+  --space-20: 2rem;
+  --space-24: 2.4rem;
+  --space-32: 3.2rem;
+  --space-40: 4rem;
+  --space-48: 4.8rem;
+  --space-72: 7.2rem;
+
+  // spacing aliases
+  --spacing-unit: 0.8rem; // base unit = 8px
+
+  // ========================================
+  // TYPOGRAPHY
+  // ========================================
+  --font-family-light: system-ui, -apple-system, sans-serif;
+  --font-family-regular: system-ui, -apple-system, sans-serif;
+  --font-family-bold: system-ui, -apple-system, sans-serif;
+
+  // font sizes (fluid with clamp for responsiveness)
+  --font-size-xxxs: 1.2rem;
+  --font-size-xxs: 1.4rem;
+  --font-size-xs: 1.6rem;
+  --font-size-s: 1.8rem;
+  --font-size-p: clamp(1.6rem, 1.4rem + 0.5vw, 2rem);
+  --font-size-h3: clamp(2rem, 1.8rem + 0.5vw, 2.4rem);
+  --font-size-h2: clamp(2.4rem, 2rem + 1vw, 3.2rem);
+  --font-size-h1: clamp(3.2rem, 2.8rem + 1.2vw, 4.2rem);
+
+  // line heights
+  --line-height-h: 1.25;
+  --line-height-subtitle: 1.3;
+  --line-height-p: 1.55;
+
+  // font weights
+  --font-weight-light: 300;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-bold: 700;
+
+  // ========================================
+  // TRANSITIONS
+  // ========================================
+  --transition-fast: 0.15s;
+  --transition-normal: 0.3s;
+  --transition-slow: 0.5s;
+  --transition-very-slow: 0.8s;
+
+  // easing functions
+  --easing-default: ease-in-out;
+  --easing-linear: linear;
+  --easing-ease-in: ease-in;
+  --easing-ease-out: ease-out;
+  --easing-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  --easing-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+
+  // ========================================
+  // BORDERS & RADIUS
+  // ========================================
+  --border-width-thin: 1px;
+  --border-width-medium: 2px;
+  --border-width-thick: 3px;
+
+  --border-radius-small: 0.4rem;
+  --border-radius-medium: 0.8rem;
+  --border-radius-large: 1.6rem;
+  --border-radius-circle: 50%;
+  --border-radius-pill: 9999px;
+
+  // ========================================
+  // SHADOWS
+  // ========================================
+  --shadow-small: 0 2px 4px rgba(var(--color-black-rgb), 0.1);
+  --shadow-medium: 0 4px 8px rgba(var(--color-black-rgb), 0.15);
+  --shadow-large: 0 8px 16px rgba(var(--color-black-rgb), 0.2);
+  --shadow-hover: 0 6px 12px rgba(var(--color-black-rgb), 0.18);
+
+  // ========================================
+  // SIZES
+  // ========================================
+  --size-icon: 2.4rem;
+  --size-button-height: 4.8rem;
+  --max-width-container: 58rem;
+  --max-width-text: 65ch;
+
+  // ========================================
+  // Z-INDEX
+  // ========================================
+  --z-index-behind: -1;
+  --z-index-base: 0;
+  --z-index-dropdown: 100;
+  --z-index-sticky: 200;
+  --z-index-modal: 300;
+  --z-index-toast: 400;
+}
+
+// ========================================
+// GLOBAL STYLES
+// ========================================
+
+html {
+  font-size: 62.5%; // 1rem = 10px (accessibility + easy calc)
+}
+
+body {
+  background-color: var(--color-primary);
+  color: var(--color-text);
+  font-family: var(--font-family-light);
+  font-size: var(--font-size-xs);
+  line-height: var(--line-height-p);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  margin: 0;
+  padding: 0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+// ========================================
+// LAYOUT UTILITIES
+// ========================================
+
+.row {
+  max-width: var(--max-width-container);
+  margin-inline: auto;
+  padding-inline: var(--space-16);
+}
+
+.row--full {
+  max-width: unset;
+}
+
+section {
+  padding-block: var(--space-24) var(--space-32);
+}

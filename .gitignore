@@ -1,0 +1,47 @@
+# dependencies
+node_modules/
+
+# production build
+dist/
+build/
+
+# logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+logs/
+
+# environment variables
+.env
+.env.local
+.env.*.local
+
+# editor
+.vscode/*
+!.vscode/settings.json
+.idea/
+*.swp
+*.swo
+*~
+
+# os
+.DS_Store
+Thumbs.db
+
+# testing
+coverage/
+
+# misc
+.cache/
+.temp/
+.tmp/
+
+# firebase
+.firebase/
+firebase-debug.log
+firestore-debug.log
+
+# pwa
+dev-dist/
+sw.js
+workbox-*.js

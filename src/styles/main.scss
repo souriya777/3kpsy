@@ -1,0 +1,42 @@
+// main scss entry point
+// follows 7-1 pattern architecture
+
+// ========================================
+// 1. ABSTRACTS (tools, no actual css output)
+// ========================================
+@use "abstracts/mixins";
+
+// ========================================
+// 2. BASE (reset, typography, base styles)
+// ========================================
+@use "base/reset";
+@use "base/base";
+@use "base/typography";
+
+// ========================================
+// 3. LAYOUT (grid, header, footer, etc.)
+// ========================================
+// @use "layout/grid";
+// @use "layout/header";
+
+// ========================================
+// 4. COMPONENTS (buttons, cards, etc.)
+// ========================================
+// @use "components/buttons";
+// @use "components/cards";
+
+// ========================================
+// 5. PAGES (page-specific styles)
+// ========================================
+// @use "pages/home";
+// @use "pages/stats";
+
+// ========================================
+// 6. THEMES (color schemes, etc.)
+// ========================================
+// @use "themes/default";
+
+// ========================================
+// 7. VENDORS (third-party overrides)
+// ========================================
+// @use "vendors/chart-overrides";
