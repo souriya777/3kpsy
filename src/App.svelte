@@ -1,5 +1,7 @@
 <script>
   // app entry point
+  import AuthTest from '@components/AuthTest.svelte'; // TODO: remove after testing
+
   let currentView = $state('home'); // 'home' or 'stats'
 </script>
 
@@ -11,6 +13,8 @@
   <main class="app__main">
     {#if currentView === 'home'}
       <div class="home">
+        <!-- TODO: remove AuthTest after testing -->
+        <AuthTest />
         <p>Home view - Metrics coming soon...</p>
       </div>
     {:else}

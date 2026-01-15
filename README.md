@@ -404,7 +404,7 @@ users/{userId}/
   }
   ```
 
-- **Commentaires en anglais minuscules**
+- **Commentaires en anglais minuscules** (JS, SCSS, HTML, tous les fichiers)
   ```javascript
   // fetch daily metrics from firestore
   const metrics = await fetchDailyMetrics(userId, date);
@@ -412,6 +412,16 @@ users/{userId}/
   // validate deep work hours (0-24)
   if (hours < 0 || hours > 24) return false;
   ```
+
+  ```scss
+  // colors (rgba) - colors with opacity
+  --color-border: rgba(var(--color-white-rgb), 0.2);
+
+  // typography (modular scale - ratio 1.25 for harmony)
+  --font-size-base: 1.8rem;
+  ```
+
+  **Pourquoi anglais :** Cohérence avec l'écosystème JS/dev, partage de code facilité, standard international.
 
 - **Naming conventions:**
   - Variables/functions: `camelCase`
@@ -520,7 +530,14 @@ users/{userId}/
   - **Toutes** les couleurs (hex, rgb, rgba) doivent être en variables
   - **Toutes** les transitions (durée, easing) doivent être en variables
   - **Toutes** les ombres, bordures, border-radius doivent être en variables
+  - **Toutes** les font-sizes doivent être en variables avec échelle harmonieuse (modular scale)
   - Objectif : Voir le design system d'un coup d'œil dans `base/_base.scss`
+
+  **Échelle Typographique Harmonieuse (Modular Scale)**
+  - Utiliser une échelle modulaire avec ratio constant (ex: 1.25, 1.333, 1.414, 1.618)
+  - Base: 1.6rem → appliquer le ratio → 2rem → 2.4rem → 3.2rem → 4rem → 4.8rem
+  - Progression visuelle cohérente et agréable
+  - Évite les tailles "au hasard" (ex: 17px, 23px, 31px)
 
   ```scss
   // base/_base.scss

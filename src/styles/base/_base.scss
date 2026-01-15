@@ -10,14 +10,16 @@
   --color-error: #f44336;
 
   // ========================================
-  // COLORS (rgb) - pour opacité dynamique
+  // colors (rgb) - for dynamic opacity with rgba()
   // ========================================
   --color-white-rgb: 255, 255, 255;
   --color-black-rgb: 0, 0, 0;
   --color-primary-rgb: 202, 60, 102;
+  --color-success-rgb: 76, 175, 80;
+  --color-accent-rgb: 255, 107, 157;
 
   // ========================================
-  // COLORS (rgba) - couleurs avec opacité
+  // colors (rgba) - colors with opacity
   // ========================================
   --color-overlay: rgba(var(--color-black-rgb), 0.5);
   --color-overlay-light: rgba(var(--color-black-rgb), 0.3);
@@ -25,6 +27,10 @@
   --color-border-hover: rgba(var(--color-white-rgb), 0.4);
   --color-hover-bg: rgba(var(--color-white-rgb), 0.1);
   --color-active-bg: rgba(var(--color-white-rgb), 0.15);
+  --color-success-bg: rgba(var(--color-success-rgb), 0.1);
+  --color-success-bg-hover: rgba(var(--color-success-rgb), 0.15);
+  --color-accent-bg: rgba(var(--color-accent-rgb), 0.2);
+  --color-accent-bg-hover: rgba(var(--color-accent-rgb), 0.3);
 
   // ========================================
   // SPACING (x4/8 rule)
@@ -44,21 +50,31 @@
   --spacing-unit: 0.8rem; // base unit = 8px
 
   // ========================================
-  // TYPOGRAPHY
+  // typography (modular scale - ratio 1.25 for harmony)
   // ========================================
   --font-family-light: system-ui, -apple-system, sans-serif;
   --font-family-regular: system-ui, -apple-system, sans-serif;
   --font-family-bold: system-ui, -apple-system, sans-serif;
 
-  // font sizes (fluid with clamp for responsiveness)
-  --font-size-xxxs: 1.2rem;
-  --font-size-xxs: 1.4rem;
-  --font-size-xs: 1.6rem;
-  --font-size-s: 1.8rem;
-  --font-size-p: clamp(1.6rem, 1.4rem + 0.5vw, 2rem);
-  --font-size-h3: clamp(2rem, 1.8rem + 0.5vw, 2.4rem);
-  --font-size-h2: clamp(2.4rem, 2rem + 1vw, 3.2rem);
-  --font-size-h1: clamp(3.2rem, 2.8rem + 1.2vw, 4.2rem);
+  // font sizes - modular scale based on 1.6rem with 1.25 ratio
+  // base: 1.6rem (16px) → 2rem (20px) → 2.5rem (25px) → 3.2rem (32px) → 4rem (40px) → 4.8rem (48px)
+  --font-size-xxxs: 1rem;      // 10px
+  --font-size-xxs: 1.2rem;     // 12px
+  --font-size-xs: 1.4rem;      // 14px
+  --font-size-s: 1.6rem;       // 16px (base)
+  --font-size-base: 1.8rem;    // 18px
+  --font-size-m: 2rem;         // 20px (base * 1.25)
+  --font-size-l: 2.4rem;       // 24px (base * 1.5)
+  --font-size-xl: 3.2rem;      // 32px (base * 2)
+  --font-size-xxl: 4rem;       // 40px (base * 2.5)
+  --font-size-xxxl: 4.8rem;    // 48px (base * 3)
+  --font-size-display: 6rem;   // 60px (base * 3.75)
+
+  // semantic aliases for common usage
+  --font-size-p: var(--font-size-base);
+  --font-size-h3: var(--font-size-l);
+  --font-size-h2: var(--font-size-xl);
+  --font-size-h1: var(--font-size-xxl);
 
   // line heights
   --line-height-h: 1.25;
