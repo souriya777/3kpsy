@@ -14,24 +14,30 @@
 
   // increment deep work by 0.5h
   function increment() {
-    if (dailyMetrics.deepWork < 24) {
-      dailyMetrics.deepWork += 0.5;
-      saveDailyMetrics();
-      onChange();
-    }
+    dailyMetrics.update(m => {
+      if (m.deepWork < 24) {
+        m.deepWork += 0.5;
+      }
+      return m;
+    });
+    saveDailyMetrics();
+    onChange();
   }
 
   // decrement deep work by 0.5h
   function decrement() {
-    if (dailyMetrics.deepWork > 0) {
-      dailyMetrics.deepWork -= 0.5;
-      saveDailyMetrics();
-      onChange();
-    }
+    dailyMetrics.update(m => {
+      if (m.deepWork > 0) {
+        m.deepWork -= 0.5;
+      }
+      return m;
+    });
+    saveDailyMetrics();
+    onChange();
   }
 
   // computed: check if goal is reached
-  let isGoalReached = $derived(dailyMetrics.deepWork >= dailyMetrics.deepWorkGoal);
+  let isGoalReached = $derived($dailyMetrics.deepWork >= $dailyMetrics.deepWorkGoal);
 </script>
 
 <div class="metric-card" class:goal-reached={isGoalReached}>
@@ -41,24 +47,24 @@
   </div>
 
   <div class="metric-card__value">
-    <span class="value">{dailyMetrics.deepWork.toFixed(1)}h</span>
-    <span class="goal">/ {dailyMetrics.deepWorkGoal}h</span>
+    <span class="value">{$dailyMetrics.deepWork.toFixed(1)}h</span>
+    <span class="goal">/ {$dailyMetrics.deepWorkGoal}h</span>
   </div>
 
   <div class="metric-card__actions">
     <button
       class="btn btn--decrement"
       onclick={decrement}
-      disabled={dailyMetrics.deepWork <= 0}
-      aria-label="Décrémenter de 0.5 heure"
+      disabled={$dailyMetrics.deepWork <= 0}
+      aria-label="decrease by 0.5 hours"
     >
       -0.5h
     </button>
     <button
       class="btn btn--increment"
       onclick={increment}
-      disabled={dailyMetrics.deepWork >= 24}
-      aria-label="Incrémenter de 0.5 heure"
+      disabled={$dailyMetrics.deepWork >= 24}
+      aria-label="increase by 0.5 hours"
     >
       +0.5h
     </button>

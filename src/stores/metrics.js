@@ -1,9 +1,10 @@
 /**
- * metrics store with svelte 5 runes
+ * metrics store with svelte stores
  * manages daily metrics state and firebase sync
  * @module stores/metrics
  */
 
+import { writable, get } from 'svelte/store';
 import { doc, setDoc, getDoc, collection, query, orderBy, limit, getDocs } from 'firebase/firestore';
 import { db, auth } from '@stores/firebase';
 
@@ -25,8 +26,8 @@ import { db, auth } from '@stores/firebase';
  * @property {number} inProgress - number of projects in progress
  */
 
-// create reactive state with $state
-let dailyMetrics = $state({
+// create writable stores
+const dailyMetrics = writable({
   deepWork: 0,
   deepWorkGoal: 1, // start with 1h goal
   wakeUp: '07:00',
@@ -37,12 +38,12 @@ let dailyMetrics = $state({
   timestamp: new Date().toISOString()
 });
 
-let projectsMetrics = $state({
+const projectsMetrics = writable({
   completed: 0,
   inProgress: 0
 });
 
-let roadmap = $state([]);
+const roadmap = writable([]);
 
 /**
  * get current date in YYYY-MM-DD format
@@ -65,7 +66,7 @@ function getUserId() {
  * @param {string} date - date in YYYY-MM-DD format
  * @returns {Promise<void>}
  */
-export async function saveDailyMetrics(date = getCurrentDate()) {
+async function saveDailyMetrics(date = getCurrentDate()) {
   const userId = getUserId();
   if (!userId) {
     console.warn('Cannot save metrics: user not authenticated');
@@ -74,8 +75,9 @@ export async function saveDailyMetrics(date = getCurrentDate()) {
 
   try {
     const docRef = doc(db, `users/${userId}/daily/${date}`);
+    const currentMetrics = get(dailyMetrics);
     await setDoc(docRef, {
-      ...dailyMetrics,
+      ...currentMetrics,
       timestamp: new Date().toISOString()
     }, { merge: true });
     console.log('Daily metrics saved successfully');
@@ -90,7 +92,7 @@ export async function saveDailyMetrics(date = getCurrentDate()) {
  * @param {string} date - date in YYYY-MM-DD format
  * @returns {Promise<void>}
  */
-export async function loadDailyMetrics(date = getCurrentDate()) {
+async function loadDailyMetrics(date = getCurrentDate()) {
   const userId = getUserId();
   if (!userId) {
     console.warn('Cannot load metrics: user not authenticated');
@@ -102,9 +104,9 @@ export async function loadDailyMetrics(date = getCurrentDate()) {
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
-      const data = docSnap.data();
+      const data = /** @type {DailyMetrics} */ (docSnap.data());
       // update reactive state
-      dailyMetrics = { ...data };
+      dailyMetrics.set(data);
       console.log('Daily metrics loaded successfully');
     } else {
       console.log('No metrics found for this date, using defaults');
@@ -119,7 +121,7 @@ export async function loadDailyMetrics(date = getCurrentDate()) {
  * save projects metrics to firestore
  * @returns {Promise<void>}
  */
-export async function saveProjectsMetrics() {
+async function saveProjectsMetrics() {
   const userId = getUserId();
   if (!userId) {
     console.warn('Cannot save projects: user not authenticated');
@@ -128,7 +130,8 @@ export async function saveProjectsMetrics() {
 
   try {
     const docRef = doc(db, `users/${userId}/projects/current`);
-    await setDoc(docRef, projectsMetrics);
+    const currentProjects = get(projectsMetrics);
+    await setDoc(docRef, currentProjects);
     console.log('Projects metrics saved successfully');
   } catch (error) {
     console.error('Failed to save projects metrics:', error);
@@ -140,7 +143,7 @@ export async function saveProjectsMetrics() {
  * load projects metrics from firestore
  * @returns {Promise<void>}
  */
-export async function loadProjectsMetrics() {
+async function loadProjectsMetrics() {
   const userId = getUserId();
   if (!userId) {
     console.warn('Cannot load projects: user not authenticated');
@@ -152,7 +155,8 @@ export async function loadProjectsMetrics() {
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
-      projectsMetrics = { ...docSnap.data() };
+      const data = /** @type {ProjectsMetrics} */ (docSnap.data());
+      projectsMetrics.set(data);
       console.log('Projects metrics loaded successfully');
     }
   } catch (error) {
@@ -165,7 +169,7 @@ export async function loadProjectsMetrics() {
  * get last 7 days of metrics for charts
  * @returns {Promise<Array<DailyMetrics>>}
  */
-export async function getLast7DaysMetrics() {
+async function getLast7DaysMetrics() {
   const userId = getUserId();
   if (!userId) {
     console.warn('Cannot get metrics: user not authenticated');
@@ -193,5 +197,14 @@ export async function getLast7DaysMetrics() {
   }
 }
 
-// export reactive state
-export { dailyMetrics, projectsMetrics, roadmap };
+// export all stores and functions
+export {
+  dailyMetrics,
+  projectsMetrics,
+  roadmap,
+  saveDailyMetrics,
+  loadDailyMetrics,
+  saveProjectsMetrics,
+  loadProjectsMetrics,
+  getLast7DaysMetrics
+};
