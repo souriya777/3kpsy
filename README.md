@@ -191,12 +191,14 @@ users/{userId}/
 - [ ] Vue "Cette semaine vs dernière"
 - [ ] Comparaison simple (moyenne, tendance)
 
-### Phase 6: Roadmap Modal (1h)
+### Phase 6: Roadmap Modal (1h) ✅ COMPLÉTÉ
 
-- [ ] Modal pour ts-barnum milestones
-- [ ] Liste éditable (add/remove/toggle)
-- [ ] Sauvegarde Firebase roadmap/
-- [ ] Calcul % basé sur milestones done
+- [x] Modal pour ts-barnum milestones
+- [x] Liste éditable (add/remove/toggle)
+- [x] Sauvegarde Firebase roadmap/
+- [x] Calcul % basé sur milestones done
+- [x] Animations et transitions
+- [x] Chargement automatique au démarrage
 
 ### Phase 7: PWA & Deploy (1h) ✅ COMPLÉTÉ
 
@@ -208,7 +210,7 @@ users/{userId}/
 - [ ] Config DNS (si custom domain)
 
 **TOTAL ESTIMÉ: 8-11h de développement**
-**TEMPS RÉALISÉ: ~6h (Phases 1-4, 7 complètes)**
+**TEMPS RÉALISÉ: ~7h (Phases 1-4, 6-7 complètes)**
 
 ## 📋 TODO List Détaillée
 
@@ -839,4 +841,4 @@ Projet personnel - Usage libre
 ---
 
 **Dernière mise à jour:** 2026-01-15
-**Version:** 0.3.0 (PWA installable - production ready)
+**Version:** 0.4.0 (roadmap modal + PWA production ready)

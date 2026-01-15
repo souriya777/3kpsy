@@ -1,11 +1,12 @@
 <script>
   // app entry point
   import { user, signInWithGoogle, signOutUser } from '@stores/auth';
-  import { loadDailyMetrics, loadProjectsMetrics } from '@stores/metrics';
+  import { loadDailyMetrics, loadProjectsMetrics, loadRoadmap } from '@stores/metrics';
   import MetricDeepWork from '@components/MetricDeepWork.svelte';
   import MetricSleep from '@components/MetricSleep.svelte';
   import MetricProjects from '@components/MetricProjects.svelte';
   import MetricProgress from '@components/MetricProgress.svelte';
+  import RoadmapModal from '@components/RoadmapModal.svelte';
 
   let currentView = $state('home'); // 'home' or 'stats'
   let showRoadmap = $state(false);
@@ -15,6 +16,7 @@
     if ($user) {
       loadDailyMetrics();
       loadProjectsMetrics();
+      loadRoadmap();
     }
   });
 
@@ -81,6 +83,8 @@
     </nav>
   {/if}
 </div>
+
+<RoadmapModal bind:isOpen={showRoadmap} />
 
 <style lang="scss">
   .app {

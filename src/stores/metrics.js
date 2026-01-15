@@ -197,6 +197,54 @@ async function getLast7DaysMetrics() {
   }
 }
 
+/**
+ * save roadmap to firestore
+ * @returns {Promise<void>}
+ */
+async function saveRoadmap() {
+  const userId = getUserId();
+  if (!userId) {
+    console.warn('Cannot save roadmap: user not authenticated');
+    return;
+  }
+
+  try {
+    const docRef = doc(db, `users/${userId}/roadmap/tsBarnum`);
+    const currentRoadmap = get(roadmap);
+    await setDoc(docRef, { milestones: currentRoadmap });
+    console.log('Roadmap saved successfully');
+  } catch (error) {
+    console.error('Failed to save roadmap:', error);
+    throw error;
+  }
+}
+
+/**
+ * load roadmap from firestore
+ * @returns {Promise<void>}
+ */
+async function loadRoadmap() {
+  const userId = getUserId();
+  if (!userId) {
+    console.warn('Cannot load roadmap: user not authenticated');
+    return;
+  }
+
+  try {
+    const docRef = doc(db, `users/${userId}/roadmap/tsBarnum`);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      const data = docSnap.data();
+      roadmap.set(data.milestones || []);
+      console.log('Roadmap loaded successfully');
+    }
+  } catch (error) {
+    console.error('Failed to load roadmap:', error);
+    throw error;
+  }
+}
+
 // export all stores and functions
 export {
   dailyMetrics,
@@ -206,5 +254,7 @@ export {
   loadDailyMetrics,
   saveProjectsMetrics,
   loadProjectsMetrics,
-  getLast7DaysMetrics
+  getLast7DaysMetrics,
+  saveRoadmap,
+  loadRoadmap
 };
