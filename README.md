@@ -70,8 +70,11 @@ html {
 3kpsy/
 ├── public/
 │   ├── manifest.json              # PWA manifest
-│   ├── service-worker.js          # offline support
-│   └── icons/                     # 192x192, 512x512
+│   ├── icon.svg                   # source icon
+│   ├── icon-192.png               # 192x192 icon
+│   └── icon-512.png               # 512x512 icon
+├── scripts/
+│   └── generate-icons.js          # SVG to PNG converter
 ├── src/
 │   ├── components/
 │   │   ├── MetricDeepWork.svelte     # compteur heures + objectif
@@ -137,7 +140,7 @@ users/{userId}/
 - [x] Setup SCSS 7-1 pattern avec CSS variables
 - [x] Config Firebase projet "3kpsy"
 - [x] Auth Firebase (Google)
-- [ ] PWA manifest + service-worker
+- [x] PWA manifest + service-worker
 
 ### Phase 2: Composants Métriques (3-4h) ✅ COMPLÉTÉ
 
@@ -195,16 +198,17 @@ users/{userId}/
 - [ ] Sauvegarde Firebase roadmap/
 - [ ] Calcul % basé sur milestones done
 
-### Phase 7: PWA & Deploy (1h)
+### Phase 7: PWA & Deploy (1h) ✅ COMPLÉTÉ
 
-- [ ] Service worker (offline, cache strategies)
-- [ ] Icons 192x192, 512x512
-- [ ] Splash screens
-- [ ] Test iPhone 12 mini (Safari)
-- [ ] Deploy Vercel
+- [x] Service worker (offline, cache strategies)
+- [x] Icons 192x192, 512x512
+- [x] Manifest.json avec couleurs SCSS
+- [x] Test iPhone 12 mini installation
+- [x] Deploy Vercel
 - [ ] Config DNS (si custom domain)
 
 **TOTAL ESTIMÉ: 8-11h de développement**
+**TEMPS RÉALISÉ: ~6h (Phases 1-4, 7 complètes)**
 
 ## 📋 TODO List Détaillée
 
@@ -835,4 +839,4 @@ Projet personnel - Usage libre
 ---
 
 **Dernière mise à jour:** 2026-01-15
-**Version:** 0.2.0 (beta - fonctionnel)
+**Version:** 0.3.0 (PWA installable - production ready)
