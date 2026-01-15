@@ -1,0 +1,23 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <!-- background -->
+  <rect width="512" height="512" fill="#ca3c66" rx="64"/>
+
+  <!-- text 3kpsy -->
+  <text
+    x="256"
+    y="290"
+    font-family="system-ui, -apple-system, sans-serif"
+    font-size="120"
+    font-weight="700"
+    fill="#ffffff"
+    text-anchor="middle"
+  >3kpsy</text>
+
+  <!-- decorative flower -->
+  <text
+    x="256"
+    y="180"
+    font-size="64"
+    text-anchor="middle"
+  >🌸</text>
+</svg>

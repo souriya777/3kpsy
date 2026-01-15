@@ -130,52 +130,53 @@ users/{userId}/
 
 ## 📝 Roadmap de Développement
 
-### Phase 1: Setup (30-45min)
+### Phase 1: Setup (30-45min) ✅ COMPLÉTÉ
 
 - [x] Init dépôt Git
-- [ ] Init Svelte 5 + Vite
-- [ ] Setup SCSS 7-1 pattern avec CSS variables
-- [ ] Config Firebase projet "3kpsy"
+- [x] Init Svelte 5 + Vite
+- [x] Setup SCSS 7-1 pattern avec CSS variables
+- [x] Config Firebase projet "3kpsy"
+- [x] Auth Firebase (Google)
 - [ ] PWA manifest + service-worker
-- [ ] Auth Firebase (Google)
 
-### Phase 2: Composants Métriques (3-4h)
+### Phase 2: Composants Métriques (3-4h) ✅ COMPLÉTÉ
 
-- [ ] **MetricDeepWork.svelte** (Svelte 5 runes)
+- [x] **MetricDeepWork.svelte** (Svelte 5 + stores)
   - Input heures (float)
   - Boutons +0.5h / -0.5h
   - Affichage objectif actuel (1h → 5h)
   - Validation 0-24h
-- [ ] **MetricSleep.svelte**
+- [x] **MetricSleep.svelte**
   - Input levé (HH:mm)
   - Input couché (HH:mm)
   - Toggle sieste
   - Affichage objectif levé progressif
-- [ ] **MetricProjects.svelte**
+- [x] **MetricProjects.svelte**
   - Affichage "X/Y"
   - 4 boutons: +1/-1 pour X, +1/-1 pour Y
   - Alert visuelle si écart > 2
-- [ ] **MetricProgress.svelte**
+- [x] **MetricProgress.svelte**
   - Barre progression % (0-100)
   - Boutons +5% / -5%
   - Bouton "Roadmap" → modal
-- [ ] Stores Svelte 5 (runes) pour state management
+- [x] Stores Svelte (writable) pour state management
 
-### Phase 3: Firebase Sync (1-2h)
+### Phase 3: Firebase Sync (1-2h) ✅ COMPLÉTÉ
 
-- [ ] Config Firebase SDK
-- [ ] Auth Google Sign-In
-- [ ] CRUD operations daily/{date}
-- [ ] Sync bidirectionnelle Firestore
-- [ ] Offline-first avec cache local
-- [ ] Update projects/ et roadmap/
+- [x] Config Firebase SDK
+- [x] Auth Google Sign-In
+- [x] CRUD operations daily/{date}
+- [x] Sync bidirectionnelle Firestore
+- [x] Chargement automatique au démarrage
+- [x] Offline-first (persistance par défaut)
+- [x] Update projects/ et roadmap/
 
-### Phase 4: Page Principale (1h)
+### Phase 4: Page Principale (1h) ✅ COMPLÉTÉ
 
-- [ ] Layout responsive (iPhone 12 mini: 375x812px)
-- [ ] Integration des 4 composants métriques
-- [ ] Navigation vers stats
-- [ ] Save automatique onChange
+- [x] Layout responsive (iPhone 12 mini: 375x812px)
+- [x] Integration des 4 composants métriques
+- [x] Navigation vers stats
+- [x] Save automatique onChange
 
 ### Phase 5: Page Stats (2-3h)
 
@@ -833,5 +834,5 @@ Projet personnel - Usage libre
 
 ---
 
-**Dernière mise à jour:** 2026-01-12
-**Version:** 0.1.0 (en développement)
+**Dernière mise à jour:** 2026-01-15
+**Version:** 0.2.0 (beta - fonctionnel)

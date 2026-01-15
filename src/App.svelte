@@ -1,6 +1,7 @@
 <script>
   // app entry point
   import { user, signInWithGoogle, signOutUser } from '@stores/auth';
+  import { loadDailyMetrics, loadProjectsMetrics } from '@stores/metrics';
   import MetricDeepWork from '@components/MetricDeepWork.svelte';
   import MetricSleep from '@components/MetricSleep.svelte';
   import MetricProjects from '@components/MetricProjects.svelte';
@@ -8,6 +9,14 @@
 
   let currentView = $state('home'); // 'home' or 'stats'
   let showRoadmap = $state(false);
+
+  // load metrics when user signs in
+  $effect(() => {
+    if ($user) {
+      loadDailyMetrics();
+      loadProjectsMetrics();
+    }
+  });
 
   function openRoadmap() {
     showRoadmap = true;
