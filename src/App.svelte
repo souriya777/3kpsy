@@ -7,6 +7,7 @@
   import MetricProjects from '@components/MetricProjects.svelte';
   import MetricProgress from '@components/MetricProgress.svelte';
   import RoadmapModal from '@components/RoadmapModal.svelte';
+  import WeeklyChart from '@components/WeeklyChart.svelte';
 
   let currentView = $state('home'); // 'home' or 'stats'
   let showRoadmap = $state(false);
@@ -22,10 +23,6 @@
 
   function openRoadmap() {
     showRoadmap = true;
-  }
-
-  function closeRoadmap() {
-    showRoadmap = false;
   }
 </script>
 
@@ -61,7 +58,11 @@
       </div>
     {:else}
       <div class="stats">
-        <p>Stats view coming soon...</p>
+        <div class="stats__header">
+          <h2>Statistiques hebdomadaires</h2>
+          <p class="stats__subtitle">Visualise ta progression sur les 7 derniers jours</p>
+        </div>
+        <WeeklyChart />
       </div>
     {/if}
   </main>
@@ -216,6 +217,26 @@
 
     &:active {
       transform: scale(0.98);
+    }
+  }
+
+  .stats {
+    max-width: var(--max-width-container);
+    margin-inline: auto;
+
+    &__header {
+      margin-block-end: var(--space-24);
+      text-align: center;
+
+      h2 {
+        margin-block-end: var(--space-8);
+      }
+    }
+
+    &__subtitle {
+      color: rgba(var(--color-white-rgb), 0.7);
+      font-size: var(--font-size-s);
+      margin: 0;
     }
   }
 </style>

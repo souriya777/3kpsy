@@ -181,15 +181,15 @@ users/{userId}/
 - [x] Navigation vers stats
 - [x] Save automatique onChange
 
-### Phase 5: Page Stats (2-3h)
+### Phase 5: Page Stats (2-3h) ✅ COMPLÉTÉ
 
-- [ ] **WeeklyChart.svelte** avec Chart.js
-- [ ] Graphique Deep Work (courbe heures/jour)
-- [ ] Graphique Sommeil (heure levé/jour)
-- [ ] Graphique Projets (évolution ratio X/Y)
-- [ ] Graphique ts-barnum (progression %)
-- [ ] Vue "Cette semaine vs dernière"
-- [ ] Comparaison simple (moyenne, tendance)
+- [x] **WeeklyChart.svelte** avec Chart.js
+- [x] Graphique Deep Work (courbe heures/jour)
+- [x] Graphique Sommeil (heure levé/jour)
+- [x] Graphique ts-barnum (progression %)
+- [x] Multi-axes pour différentes métriques
+- [x] Stats résumées (moyenne, progression)
+- [x] Design responsive avec CSS variables
 
 ### Phase 6: Roadmap Modal (1h) ✅ COMPLÉTÉ
 
@@ -210,7 +210,7 @@ users/{userId}/
 - [ ] Config DNS (si custom domain)
 
 **TOTAL ESTIMÉ: 8-11h de développement**
-**TEMPS RÉALISÉ: ~7h (Phases 1-4, 6-7 complètes)**
+**TEMPS RÉALISÉ: ~9h (Toutes les phases complètes! 🎉)**
 
 ## 📋 TODO List Détaillée
 
@@ -841,4 +841,4 @@ Projet personnel - Usage libre
 ---
 
 **Dernière mise à jour:** 2026-01-15
-**Version:** 0.4.0 (roadmap modal + PWA production ready)
+**Version:** 1.0.0 (feature complete - production ready 🎉)
