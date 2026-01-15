@@ -8,6 +8,7 @@
   import MetricProgress from '@components/MetricProgress.svelte';
   import RoadmapModal from '@components/RoadmapModal.svelte';
   import WeeklyChart from '@components/WeeklyChart.svelte';
+  import PullToRefresh from '@components/PullToRefresh.svelte';
 
   let currentView = $state('home'); // 'home' or 'stats'
   let showRoadmap = $state(false);
@@ -23,6 +24,15 @@
 
   function openRoadmap() {
     showRoadmap = true;
+  }
+
+  // refresh all metrics from firestore
+  async function handleRefresh() {
+    await Promise.all([
+      loadDailyMetrics(),
+      loadProjectsMetrics(),
+      loadRoadmap()
+    ]);
   }
 </script>
 
@@ -47,23 +57,27 @@
           Sign In with Google
         </button>
       </div>
-    {:else if currentView === 'home'}
-      <div class="home">
-        <div class="metrics-grid">
-          <MetricDeepWork />
-          <MetricSleep />
-          <MetricProjects />
-          <MetricProgress onOpenRoadmap={openRoadmap} />
-        </div>
-      </div>
     {:else}
-      <div class="stats">
-        <div class="stats__header">
-          <h2>Statistiques hebdomadaires</h2>
-          <p class="stats__subtitle">Visualise ta progression sur les 7 derniers jours</p>
-        </div>
-        <WeeklyChart />
-      </div>
+      <PullToRefresh onRefresh={handleRefresh}>
+        {#if currentView === 'home'}
+          <div class="home">
+            <div class="metrics-grid">
+              <MetricProgress onOpenRoadmap={openRoadmap} />
+              <MetricDeepWork />
+              <MetricProjects />
+              <MetricSleep />
+            </div>
+          </div>
+        {:else}
+          <div class="stats">
+            <div class="stats__header">
+              <h2>Statistiques hebdomadaires</h2>
+              <p class="stats__subtitle">Visualise ta progression sur les 7 derniers jours</p>
+            </div>
+            <WeeklyChart />
+          </div>
+        {/if}
+      </PullToRefresh>
     {/if}
   </main>
 
