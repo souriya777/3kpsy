@@ -16,7 +16,6 @@ import { db, auth } from '@stores/firebase';
  * @property {string} sleep - sleep time (HH:mm)
  * @property {boolean} nap - had a nap today
  * @property {string} wakeUpGoal - target wake up time
- * @property {number} tsBarnum - ts-barnum progress (0-100)
  * @property {string} timestamp - ISO8601 timestamp
  */
 
@@ -24,6 +23,7 @@ import { db, auth } from '@stores/firebase';
  * @typedef {Object} ProjectsMetrics
  * @property {number} completed - number of completed projects
  * @property {number} inProgress - number of projects in progress
+ * @property {number} tsBarnum - ts-barnum progress (0-100) - global project value
  */
 
 // create writable stores
@@ -34,13 +34,13 @@ const dailyMetrics = writable({
   sleep: '23:00',
   nap: false,
   wakeUpGoal: '05:30',
-  tsBarnum: 0,
   timestamp: new Date().toISOString()
 });
 
 const projectsMetrics = writable({
   completed: 0,
-  inProgress: 0
+  inProgress: 0,
+  tsBarnum: 0
 });
 
 const roadmap = writable([]);

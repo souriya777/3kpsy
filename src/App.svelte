@@ -6,14 +6,20 @@
   import MetricSleep from '@components/MetricSleep.svelte';
   import MetricProjects from '@components/MetricProjects.svelte';
   import MetricProgress from '@components/MetricProgress.svelte';
-  import RoadmapModal from '@components/RoadmapModal.svelte';
   import WeeklyChart from '@components/WeeklyChart.svelte';
   import PullToRefresh from '@components/PullToRefresh.svelte';
   import Drawer from '@components/Drawer.svelte';
+  import TsBarnumModal from '@components/TsBarnumModal.svelte';
+  import DeepWorkModal from '@components/DeepWorkModal.svelte';
+  import SleepModal from '@components/SleepModal.svelte';
+  import ProjectsModal from '@components/ProjectsModal.svelte';
 
   let currentView = $state('home'); // 'home' or 'stats'
-  let showRoadmap = $state(false);
   let drawerOpen = $state(false);
+  let tsBarnumModalOpen = $state(false);
+  let deepWorkModalOpen = $state(false);
+  let sleepModalOpen = $state(false);
+  let projectsModalOpen = $state(false);
 
   // load metrics when user signs in
   $effect(() => {
@@ -24,10 +30,6 @@
     }
   });
 
-  function openRoadmap() {
-    showRoadmap = true;
-  }
-
   // refresh all metrics from firestore
   async function handleRefresh() {
     await Promise.all([
@@ -35,6 +37,22 @@
       loadProjectsMetrics(),
       loadRoadmap()
     ]);
+  }
+
+  function openTsBarnumModal() {
+    tsBarnumModalOpen = true;
+  }
+
+  function openDeepWorkModal() {
+    deepWorkModalOpen = true;
+  }
+
+  function openSleepModal() {
+    sleepModalOpen = true;
+  }
+
+  function openProjectsModal() {
+    projectsModalOpen = true;
   }
 </script>
 
@@ -66,17 +84,16 @@
         {#if currentView === 'home'}
           <div class="home">
             <div class="metrics-grid">
-              <MetricProgress />
-              <MetricDeepWork />
-              <MetricProjects />
-              <MetricSleep />
+              <MetricProgress onOpenModal={openTsBarnumModal} />
+              <MetricDeepWork onOpenModal={openDeepWorkModal} />
+              <MetricProjects onOpenModal={openProjectsModal} />
+              <MetricSleep onOpenModal={openSleepModal} />
             </div>
           </div>
         {:else}
           <div class="stats">
             <div class="stats__header">
-              <h2>Statistiques hebdomadaires</h2>
-              <p class="stats__subtitle">Visualise ta progression sur les 7 derniers jours</p>
+              <h2>Stats 7 derniers jours</h2>
             </div>
             <WeeklyChart />
           </div>
@@ -86,8 +103,11 @@
   </main>
 </div>
 
-<Drawer bind:isOpen={drawerOpen} bind:currentView={currentView} onOpenRoadmap={openRoadmap} />
-<RoadmapModal bind:isOpen={showRoadmap} />
+<Drawer bind:isOpen={drawerOpen} bind:currentView={currentView} />
+<TsBarnumModal bind:isOpen={tsBarnumModalOpen} />
+<DeepWorkModal bind:isOpen={deepWorkModalOpen} />
+<SleepModal bind:isOpen={sleepModalOpen} />
+<ProjectsModal bind:isOpen={projectsModalOpen} />
 
 <style lang="scss">
   .app {
@@ -100,9 +120,9 @@
       border-bottom: var(--border-width-thin) solid var(--color-border);
 
       .header-content {
-        display: flex;
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
         align-items: center;
-        gap: var(--space-16);
         max-width: var(--max-width-container);
         margin-inline: auto;
       }
@@ -110,7 +130,8 @@
       h1 {
         margin: 0;
         font-size: var(--font-size-h2);
-        flex: 1;
+        text-align: center;
+        grid-column: 2;
       }
     }
 
@@ -141,10 +162,6 @@
     margin: var(--space-72) auto;
     text-align: center;
 
-    h2 {
-      margin-block-end: var(--space-16);
-    }
-
     p {
       color: rgba(var(--color-white-rgb), 0.8);
       margin-block-end: var(--space-32);
@@ -163,12 +180,7 @@
     transition: all var(--transition-fast) var(--easing-default);
 
     &:hover {
-      transform: scale(1.05);
-      box-shadow: var(--shadow-medium);
-    }
-
-    &:active {
-      transform: scale(0.98);
+      opacity: 0.9;
     }
   }
 
@@ -180,7 +192,7 @@
     cursor: pointer;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     transition: all var(--transition-fast) var(--easing-default);
 
     svg {
@@ -188,11 +200,7 @@
     }
 
     &:hover {
-      transform: scale(1.1);
-    }
-
-    &:active {
-      transform: scale(0.95);
+      opacity: 0.8;
     }
   }
 
@@ -203,16 +211,6 @@
     &__header {
       margin-block-end: var(--space-24);
       text-align: center;
-
-      h2 {
-        margin-block-end: var(--space-8);
-      }
-    }
-
-    &__subtitle {
-      color: rgba(var(--color-white-rgb), 0.7);
-      font-size: var(--font-size-s);
-      margin: 0;
     }
   }
 </style>

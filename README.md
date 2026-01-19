@@ -6,6 +6,14 @@
 
 Application mobile-first PWA (iPhone 12 mini) pour tracker des métriques quotidiennes avec système d'objectifs progressifs "Blue Lock". Toutes les données sont synchronisées via Firebase pour analyse future et consultation multi-périphériques.
 
+## TODO souriya
+
+- [ ] revue de code
+- [ ] button menu : align texte
+- [ ] modal "projet" "en cours/terminé" -> pas de nombre
+- [ ] si pas de metric dans l'écrant d'accueil -> quoi mettre ?
+- [ ] stats : à partir d'aujourd'hui
+
 ### Métriques Trackées (4 au total)
 
 1. **Deep Work** - Heures de travail concentré (objectif progressif: 1h → 5h max)
@@ -49,15 +57,17 @@ Application mobile-first PWA (iPhone 12 mini) pour tracker des métriques quotid
 **REM au lieu de PX** via `html { font-size: 62.5%; }` (1rem = 10px)
 
 **Pourquoi REM > PX :**
+
 - **Accessibilité** : Respecte les préférences de taille de police de l'utilisateur (paramètres navigateur)
 - **Responsive** : Change toutes les tailles proportionnellement en ajustant juste `html { font-size }`
 - **Maintenance** : Ajuste toute l'échelle typographique facilement
 - **Calcul mental facile** : 1.6rem = 16px, 2.4rem = 24px, 3.2rem = 32px
 
 **Exemple :**
+
 ```scss
 :root {
-  --space-8: 0.8rem;  // 8px
+  --space-8: 0.8rem; // 8px
   --space-16: 1.6rem; // 16px
   --font-size-p: 1.8rem; // 18px
 }
@@ -329,6 +339,7 @@ users/{userId}/
 ### SCSS Styling (7-1 Pattern with CSS Variables)
 
 - [ ] `base/_base.scss` (`:root` with CSS variables)
+
   ```scss
   :root {
     // colors
@@ -379,6 +390,7 @@ users/{userId}/
     padding-inline: var(--space-16);
   }
   ```
+
 - [ ] `abstracts/_mixins.scss` (flex helpers, responsive)
 - [ ] `base/_reset.scss` (normalize CSS)
 - [ ] `base/_typography.scss` (h1, h2, p styles)
@@ -421,6 +433,7 @@ users/{userId}/
 #### JavaScript/Svelte
 
 - **JSDoc pour TypeScript:** Utiliser JSDoc comments au lieu de .ts
+
   ```javascript
   /**
    * @typedef {Object} Metric
@@ -440,6 +453,7 @@ users/{userId}/
   ```
 
 - **Commentaires en anglais minuscules** (JS, SCSS, HTML, tous les fichiers)
+
   ```javascript
   // fetch daily metrics from firestore
   const metrics = await fetchDailyMetrics(userId, date);
@@ -465,15 +479,16 @@ users/{userId}/
   - Fichiers SCSS: `_kebab-case.scss`
 
 - **Path aliases (pas de chemins relatifs)**
+
   ```javascript
   // ✅ good - utiliser les alias @
-  import MetricCard from '@components/MetricCard.svelte';
-  import { metricsStore } from '@stores/metrics';
-  import '@styles/main.scss';
+  import MetricCard from "@components/MetricCard.svelte";
+  import { metricsStore } from "@stores/metrics";
+  import "@styles/main.scss";
 
   // ❌ avoid - chemins relatifs
-  import MetricCard from '../../components/MetricCard.svelte';
-  import { metricsStore } from '../stores/metrics';
+  import MetricCard from "../../components/MetricCard.svelte";
+  import { metricsStore } from "../stores/metrics";
   ```
 
   **Configuration requise:**
@@ -481,6 +496,7 @@ users/{userId}/
   - `jsconfig.json` : alias dans `compilerOptions.paths` (pour IDE autocomplete)
 
 - **Fonctions pures quand possible**
+
   ```javascript
   // ✅ good - pure function
   const calculateRatio = (completed, inProgress) => completed / inProgress;
@@ -493,6 +509,7 @@ users/{userId}/
   ```
 
 - **Destructuring pour la clarté**
+
   ```javascript
   // ✅ good
   const { deepWork, wakeUp, sleep } = dailyMetrics;
@@ -505,6 +522,7 @@ users/{userId}/
 #### Svelte 5 Runes
 
 - **Props avec `$props()` rune**
+
   ```svelte
   <script>
     /**
@@ -515,6 +533,7 @@ users/{userId}/
   ```
 
 - **State avec `$state()` rune**
+
   ```svelte
   <script>
     let count = $state(0);
@@ -527,6 +546,7 @@ users/{userId}/
   ```
 
 - **Effects avec `$effect()` rune**
+
   ```svelte
   <script>
     let value = $state(0);
@@ -540,6 +560,7 @@ users/{userId}/
   ```
 
 - **Event handlers inline simples, extracted si complexe**
+
   ```svelte
   <!-- ✅ good - simple -->
   <button onclick={() => value += 1}>+1</button>
@@ -633,6 +654,7 @@ users/{userId}/
   ```
 
 - **Mixins pour patterns répétés** (SCSS `@mixin` OK pour logique)
+
   ```scss
   // abstracts/_mixins.scss
   @mixin flex-center {
@@ -643,7 +665,9 @@ users/{userId}/
 
   @mixin respond-to($breakpoint) {
     @if $breakpoint == tablet {
-      @media (min-width: 768px) { @content; }
+      @media (min-width: 768px) {
+        @content;
+      }
     }
   }
 
@@ -658,11 +682,14 @@ users/{userId}/
   ```
 
 - **Nesting max 3 niveaux**
+
   ```scss
   // ✅ good
   .metric-card {
     .metric-title {
-      span { color: var(--color-accent); }
+      span {
+        color: var(--color-accent);
+      }
     }
   }
 
@@ -671,7 +698,9 @@ users/{userId}/
     .section {
       .card {
         .title {
-          span { color: red; } // 5 levels!
+          span {
+            color: red;
+          } // 5 levels!
         }
       }
     }
@@ -679,6 +708,7 @@ users/{userId}/
   ```
 
 - **Utiliser fonctions natives CSS** (`calc()`, `clamp()`, etc.)
+
   ```scss
   .responsive-text {
     // fluid typography with clamp
@@ -693,12 +723,13 @@ users/{userId}/
 #### Firebase
 
 - **Firestore queries optimisées**
+
   ```javascript
   // ✅ good - indexed query with limit
   const last7Days = query(
     collection(db, `users/${userId}/daily`),
-    orderBy('timestamp', 'desc'),
-    limit(7)
+    orderBy("timestamp", "desc"),
+    limit(7),
   );
 
   // ❌ avoid - fetch all then filter client-side
@@ -707,27 +738,29 @@ users/{userId}/
   ```
 
 - **Offline persistence activée**
+
   ```javascript
-  import { enableIndexedDbPersistence } from 'firebase/firestore';
+  import { enableIndexedDbPersistence } from "firebase/firestore";
 
   enableIndexedDbPersistence(db).catch((err) => {
-    if (err.code === 'failed-precondition') {
+    if (err.code === "failed-precondition") {
       // multiple tabs open
-    } else if (err.code === 'unimplemented') {
+    } else if (err.code === "unimplemented") {
       // browser doesn't support
     }
   });
   ```
 
 - **Error handling explicite**
+
   ```javascript
   // ✅ good
   try {
     await setDoc(doc(db, `users/${userId}/daily/${date}`), data);
   } catch (error) {
-    console.error('failed to save daily metrics:', error);
+    console.error("failed to save daily metrics:", error);
     // show user-friendly error
-    alert('Impossible de sauvegarder. Réessayez.');
+    alert("Impossible de sauvegarder. Réessayez.");
   }
 
   // ❌ avoid - silent failure
@@ -737,6 +770,7 @@ users/{userId}/
 ### Git Workflow
 
 - **Commits atomiques et descriptifs**
+
   ```bash
   # ✅ good
   git commit -m "add deep work metric component with +/- buttons"
@@ -756,6 +790,7 @@ users/{userId}/
 ### Performance
 
 - **Lazy loading pour charts**
+
   ```svelte
   <script>
     import { onMount } from 'svelte';
@@ -772,20 +807,22 @@ users/{userId}/
   ```
 
 - **Debounce pour inputs**
+
   ```javascript
-  import { debounce } from './utils';
+  import { debounce } from "./utils";
 
   const saveMetric = debounce((value) => {
     saveToFirestore(value);
   }, 500);
 
   // usage in component
-  <input oninput={(e) => saveMetric(e.target.value)} />
+  <input oninput={(e) => saveMetric(e.target.value)} />;
   ```
 
 ### Accessibilité (A11y)
 
 - **Labels pour tous les inputs**
+
   ```svelte
   <label for="wake-up">Heure de levé</label>
   <input id="wake-up" type="time" />
@@ -801,6 +838,7 @@ users/{userId}/
 ### Package Manager (pnpm)
 
 - **Toujours utiliser pnpm** pour consistance
+
   ```bash
   # ✅ good
   pnpm install
@@ -856,6 +894,7 @@ pnpm run dev
 ## 📊 Analyse des Données (Futur)
 
 Toutes les données sont stockées dans `users/{userId}/daily/{date}` avec horodatage. Dans 1 an, on pourra:
+
 - Analyser tendances long terme
 - Identifier patterns de productivité
 - Corréler sommeil ↔ deep work

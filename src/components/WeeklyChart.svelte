@@ -7,25 +7,30 @@
 
   import { onMount } from 'svelte';
   import { Chart, registerables } from 'chart.js';
-  import { getLast7DaysMetrics } from '@stores/metrics';
+  import { getLast7DaysMetrics, projectsMetrics } from '@stores/metrics';
 
-  let chartCanvas;
+  let chartCanvas = $state(null);
   let chart;
   let loading = $state(true);
   let weeklyData = $state([]);
 
-  onMount(async () => {
+  onMount(() => {
     // register chart.js components
     Chart.register(...registerables);
 
-    // load last 7 days metrics
-    weeklyData = await getLast7DaysMetrics();
-    loading = false;
+    // load data and create chart
+    (async () => {
+      weeklyData = await getLast7DaysMetrics();
+      loading = false;
 
-    // create chart
-    if (chartCanvas) {
-      createChart();
-    }
+      // wait for next tick to ensure canvas is rendered
+      await new Promise(resolve => setTimeout(resolve, 0));
+
+      // create chart
+      if (chartCanvas) {
+        createChart();
+      }
+    })();
 
     // cleanup on unmount
     return () => {
@@ -50,7 +55,6 @@
       const [hours, minutes] = d.wakeUp.split(':');
       return parseInt(hours) + parseInt(minutes) / 60;
     });
-    const tsBarnamData = weeklyData.map(d => d.tsBarnum || 0);
 
     chart = new Chart(ctx, {
       type: 'line',
@@ -60,29 +64,22 @@
           {
             label: 'Deep Work (h)',
             data: deepWorkData,
-            borderColor: '#ff6b9d',
-            backgroundColor: 'rgba(255, 107, 157, 0.1)',
+            borderColor: '#3ccaa0',
+            backgroundColor: 'rgba(60, 202, 160, 0.15)',
             tension: 0.3,
             fill: true,
-            yAxisID: 'y'
+            yAxisID: 'y',
+            borderWidth: 2
           },
           {
             label: 'Levé (heure)',
             data: wakeUpData,
-            borderColor: '#4caf50',
-            backgroundColor: 'rgba(76, 175, 80, 0.1)',
+            borderColor: '#ffd93d',
+            backgroundColor: 'rgba(255, 217, 61, 0.15)',
             tension: 0.3,
             fill: true,
-            yAxisID: 'y1'
-          },
-          {
-            label: 'ts-barnum (%)',
-            data: tsBarnamData,
-            borderColor: '#ca3c66',
-            backgroundColor: 'rgba(202, 60, 102, 0.1)',
-            tension: 0.3,
-            fill: true,
-            yAxisID: 'y2'
+            yAxisID: 'y1',
+            borderWidth: 2
           }
         ]
       },
@@ -131,13 +128,13 @@
             title: {
               display: true,
               text: 'Deep Work (h)',
-              color: '#ff6b9d'
+              color: '#3ccaa0'
             },
             grid: {
               color: 'rgba(255, 255, 255, 0.1)'
             },
             ticks: {
-              color: '#ff6b9d',
+              color: '#3ccaa0',
               font: {
                 size: 11
               }
@@ -150,30 +147,25 @@
             title: {
               display: true,
               text: 'Heure levé',
-              color: '#4caf50'
+              color: '#ffd93d'
             },
             grid: {
               drawOnChartArea: false
             },
             ticks: {
-              color: '#4caf50',
+              color: '#ffd93d',
               font: {
                 size: 11
               },
               callback: function(value) {
-                const hours = Math.floor(value);
-                const minutes = Math.round((value - hours) * 60);
+                const numValue = Number(value);
+                const hours = Math.floor(numValue);
+                const minutes = Math.round((numValue - hours) * 60);
                 return `${hours}h${minutes.toString().padStart(2, '0')}`;
               }
             },
             min: 4,
             max: 12
-          },
-          y2: {
-            type: 'linear',
-            display: false,
-            min: 0,
-            max: 100
           }
         }
       }
@@ -196,17 +188,21 @@
     </div>
     <div class="stats-summary">
       <div class="stat-item">
-        <span class="stat-label">Moyenne Deep Work</span>
+        <span class="stat-label">Moyenne DW / jour</span>
         <span class="stat-value">
           {(weeklyData.reduce((sum, d) => sum + (d.deepWork || 0), 0) / weeklyData.length).toFixed(1)}h
         </span>
       </div>
       <div class="stat-item">
-        <span class="stat-label">Progression ts-barnum</span>
+        <span class="stat-label">ts-barnum</span>
         <span class="stat-value">
-          {weeklyData.length > 1
-            ? `${((weeklyData[weeklyData.length - 1].tsBarnum || 0) - (weeklyData[0].tsBarnum || 0)).toFixed(0)}%`
-            : '0%'}
+          {$projectsMetrics.tsBarnum}%
+        </span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-label">Projets</span>
+        <span class="stat-value">
+          {$projectsMetrics.completed} / {$projectsMetrics.inProgress}
         </span>
       </div>
     </div>
@@ -264,6 +260,6 @@
   .stat-value {
     font-size: var(--font-size-l);
     font-weight: var(--font-weight-bold);
-    color: var(--color-accent);
+    text-align: center;
   }
 </style>

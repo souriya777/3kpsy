@@ -44,7 +44,7 @@
     height: 100vh;
     display: flex;
     flex-direction: column;
-    z-index: var(--z-index-modal);
+    z-index: calc(var(--z-index-modal) + 2);
   }
 
   .modal__header {
@@ -52,6 +52,7 @@
     justify-content: space-between;
     align-items: center;
     padding: var(--space-20);
+    border-block-end: 1px solid var(--color-border);
 
     h2 {
       margin: 0;
@@ -67,14 +68,10 @@
     cursor: pointer;
     padding: var(--space-8);
     line-height: 1;
-    transition: transform var(--transition-fast) var(--easing-default);
+    transition: opacity var(--transition-fast) var(--easing-default);
 
     &:hover {
-      transform: scale(1.2);
-    }
-
-    &:active {
-      transform: scale(0.9);
+      opacity: 0.8;
     }
   }
 

@@ -6,8 +6,10 @@
    */
 
   import { signOutUser, user } from '@stores/auth';
+  import { seedTestData } from '@stores/metrics.test';
 
-  let { isOpen = $bindable(false), currentView = $bindable('home'), onOpenRoadmap = () => {} } = $props();
+  let { isOpen = $bindable(false), currentView = $bindable('home') } = $props();
+  let isSeeding = $state(false);
 
   function close() {
     isOpen = false;
@@ -18,9 +20,16 @@
     close();
   }
 
-  function openRoadmap() {
-    onOpenRoadmap();
-    close();
+  async function handleSeedTestData() {
+    isSeeding = true;
+    try {
+      await seedTestData();
+      console.log('✅ Test data seeded successfully!');
+    } catch (error) {
+      console.error('❌ Failed to seed test data:', error);
+    } finally {
+      isSeeding = false;
+    }
   }
 
   async function handleSignOut() {
@@ -49,8 +58,7 @@
       class:active={currentView === 'home'}
       onclick={() => navigateTo('home')}
     >
-      <span class="nav-icon">🏠</span>
-      <span class="nav-label">Home</span>
+      <span class="nav-label">metrics</span>
     </button>
 
     <button
@@ -58,18 +66,15 @@
       class:active={currentView === 'stats'}
       onclick={() => navigateTo('stats')}
     >
-      <span class="nav-icon">📊</span>
-      <span class="nav-label">Stats</span>
+      <span class="nav-label">stats</span>
     </button>
-
-    <div class="nav-divider"></div>
 
     <button
       class="nav-item"
-      onclick={openRoadmap}
+      onclick={handleSeedTestData}
+      disabled={isSeeding}
     >
-      <span class="nav-icon">🗺️</span>
-      <span class="nav-label">Roadmap ts-barnum</span>
+      <span class="nav-label">{isSeeding ? 'seeding...' : 'seed test data'}</span>
     </button>
   </nav>
 
@@ -108,7 +113,6 @@
     width: 28rem;
     max-width: 80vw;
     background: var(--color-primary);
-    border-right: 1px solid var(--color-border);
     z-index: calc(var(--z-index-modal) + 1);
     display: flex;
     flex-direction: column;
@@ -123,7 +127,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: var(--space-20);
+      padding: var(--space-16);
       border-bottom: 1px solid var(--color-border);
 
       h2 {
@@ -135,14 +139,13 @@
 
     &__nav {
       flex: 1;
-      padding: var(--space-16);
+      padding-inline: var(--space-16);
       display: flex;
       flex-direction: column;
-      gap: var(--space-8);
     }
 
     &__footer {
-      padding: var(--space-20);
+      padding: var(--space-16);
       border-top: 1px solid var(--color-border);
     }
   }
@@ -155,14 +158,10 @@
     cursor: pointer;
     padding: var(--space-8);
     line-height: 1;
-    transition: transform var(--transition-fast) var(--easing-default);
+    transition: opacity var(--transition-fast) var(--easing-default);
 
     &:hover {
-      transform: scale(1.2);
-    }
-
-    &:active {
-      transform: scale(0.9);
+      opacity: 0.8;
     }
   }
 
@@ -170,7 +169,8 @@
     display: flex;
     align-items: center;
     gap: var(--space-16);
-    padding: var(--space-16);
+    padding-inline: var(--space-16);
+    padding-block-start: var(--space-16);
     background: transparent;
     border: 1px solid transparent;
     border-radius: var(--border-radius-medium);
@@ -180,18 +180,14 @@
     transition: all var(--transition-fast) var(--easing-default);
     text-align: left;
 
-    &:hover {
+    &:hover:not(:disabled) {
       background: rgba(var(--color-white-rgb), 0.05);
       border-color: var(--color-border);
     }
 
-    &.active {
-      background: rgba(var(--color-accent-rgb), 0.2);
-      border-color: var(--color-accent);
-    }
-
-    &:active {
-      transform: scale(0.98);
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
     }
   }
 
@@ -202,12 +198,6 @@
   .nav-label {
     flex: 1;
     font-weight: var(--font-weight-medium);
-  }
-
-  .nav-divider {
-    height: 1px;
-    background: var(--color-border);
-    margin-block: var(--space-8);
   }
 
   .btn-signout {
@@ -225,10 +215,6 @@
     &:hover {
       background: rgba(var(--color-white-rgb), 0.15);
       border-color: var(--color-border-hover);
-    }
-
-    &:active {
-      transform: scale(0.98);
     }
   }
 </style>
