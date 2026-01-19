@@ -9,9 +9,9 @@
   import { dailyMetrics, saveDailyMetrics } from '@stores/metrics';
 
   /**
-   * @type {{ onOpenRoadmap?: () => void, onChange?: () => void }}
+   * @type {{ onChange?: () => void }}
    */
-  let { onOpenRoadmap = () => {}, onChange = () => {} } = $props();
+  let { onChange = () => {} } = $props();
 
   // increment progress by 5%
   function incrementProgress() {
@@ -42,16 +42,7 @@
 </script>
 
 <div class="metric-card" class:completed={isCompleted}>
-  <div class="metric-card__header">
-    <h3 class="metric-card__title">ts-barnum</h3>
-    <button
-      class="btn-roadmap"
-      onclick={onOpenRoadmap}
-      aria-label="open project roadmap"
-    >
-      🗺️
-    </button>
-  </div>
+  <h3 class="metric-card__title">ts-barnum</h3>
 
   <div class="metric-card__value">
     <span class="value">{$dailyMetrics.tsBarnum}%</span>
@@ -107,17 +98,10 @@
       background: rgba(76, 175, 80, 0.1);
     }
 
-    &__header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-block-end: var(--space-16);
-    }
-
     &__title {
       font-size: var(--font-size-s);
       font-weight: var(--font-weight-medium);
-      margin: 0;
+      margin: 0 0 var(--space-16) 0;
       font-family: monospace;
     }
 
@@ -148,27 +132,6 @@
       font-size: var(--font-size-xs);
       font-weight: var(--font-weight-medium);
       animation: fadeIn var(--transition-normal) var(--easing-default);
-    }
-  }
-
-  .btn-roadmap {
-    padding: var(--space-8);
-    background: rgba(var(--color-white-rgb), 0.1);
-    border: var(--border-width-thin) solid var(--color-border);
-    border-radius: var(--border-radius-medium);
-    font-size: 2rem;
-    cursor: pointer;
-    transition: all var(--transition-fast) var(--easing-default);
-    line-height: 1;
-
-    &:hover {
-      background: rgba(var(--color-white-rgb), 0.15);
-      border-color: var(--color-border-hover);
-      transform: scale(1.1);
-    }
-
-    &:active {
-      transform: scale(0.95);
     }
   }
 

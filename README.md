@@ -82,7 +82,9 @@ html {
 │   │   ├── MetricProjects.svelte     # format X/Y avec alertes
 │   │   ├── MetricProgress.svelte     # barre % ts-barnum
 │   │   ├── WeeklyChart.svelte        # graphiques Chart.js
-│   │   └── RoadmapModal.svelte       # milestones ts-barnum
+│   │   ├── RoadmapModal.svelte       # milestones ts-barnum
+│   │   ├── PullToRefresh.svelte      # pull-to-refresh natif
+│   │   └── Drawer.svelte             # menu navigation latéral
 │   ├── stores/
 │   │   ├── metrics.js             # state local Svelte 5 (runes)
 │   │   └── firebase.js            # config & sync
@@ -209,8 +211,16 @@ users/{userId}/
 - [x] Deploy Vercel
 - [ ] Config DNS (si custom domain)
 
+### Phase 8: UX Améliorations ✅ COMPLÉTÉ
+
+- [x] Pull-to-refresh natif (iOS/Android style)
+- [x] Drawer menu latéral pour navigation
+- [x] Profil utilisateur dans drawer
+- [x] Désactivation du zoom (comportement natif)
+- [x] Optimisation espace écran
+
 **TOTAL ESTIMÉ: 8-11h de développement**
-**TEMPS RÉALISÉ: ~9h (Toutes les phases complètes! 🎉)**
+**TEMPS RÉALISÉ: ~10h (Toutes les phases complètes + UX améliorations! 🎉)**
 
 ## 📋 TODO List Détaillée
 
@@ -841,4 +851,4 @@ Projet personnel - Usage libre
 ---
 
 **Dernière mise à jour:** 2026-01-15
-**Version:** 1.0.0 (feature complete - production ready 🎉)
+**Version:** 1.1.0 (feature complete + UX native - production ready 🎉)

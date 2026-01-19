@@ -9,9 +9,11 @@
   import RoadmapModal from '@components/RoadmapModal.svelte';
   import WeeklyChart from '@components/WeeklyChart.svelte';
   import PullToRefresh from '@components/PullToRefresh.svelte';
+  import Drawer from '@components/Drawer.svelte';
 
   let currentView = $state('home'); // 'home' or 'stats'
   let showRoadmap = $state(false);
+  let drawerOpen = $state(false);
 
   // load metrics when user signs in
   $effect(() => {
@@ -39,20 +41,22 @@
 <div class="app">
   <header class="app__header">
     <div class="header-content">
-      <h1>3kpsy</h1>
       {#if $user}
-        <button class="btn-signout" onclick={signOutUser}>
-          Sign Out
+        <button class="btn-menu" onclick={() => drawerOpen = true} aria-label="open menu">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
         </button>
       {/if}
+      <h1>3kpsy</h1>
     </div>
   </header>
 
   <main class="app__main">
     {#if !$user}
       <div class="signin-prompt">
-        <h2>Welcome to 3kpsy</h2>
-        <p>Sign in to track your metrics</p>
         <button class="btn-signin" onclick={signInWithGoogle}>
           Sign In with Google
         </button>
@@ -62,7 +66,7 @@
         {#if currentView === 'home'}
           <div class="home">
             <div class="metrics-grid">
-              <MetricProgress onOpenRoadmap={openRoadmap} />
+              <MetricProgress />
               <MetricDeepWork />
               <MetricProjects />
               <MetricSleep />
@@ -80,25 +84,9 @@
       </PullToRefresh>
     {/if}
   </main>
-
-  {#if $user}
-    <nav class="app__nav">
-      <button
-        class:active={currentView === 'home'}
-        onclick={() => currentView = 'home'}
-      >
-        Home
-      </button>
-      <button
-        class:active={currentView === 'stats'}
-        onclick={() => currentView = 'stats'}
-      >
-        Stats
-      </button>
-    </nav>
-  {/if}
 </div>
 
+<Drawer bind:isOpen={drawerOpen} bind:currentView={currentView} onOpenRoadmap={openRoadmap} />
 <RoadmapModal bind:isOpen={showRoadmap} />
 
 <style lang="scss">
@@ -113,8 +101,8 @@
 
       .header-content {
         display: flex;
-        justify-content: space-between;
         align-items: center;
+        gap: var(--space-16);
         max-width: var(--max-width-container);
         margin-inline: auto;
       }
@@ -122,44 +110,13 @@
       h1 {
         margin: 0;
         font-size: var(--font-size-h2);
+        flex: 1;
       }
     }
 
     &__main {
       flex: 1;
       padding: var(--space-16);
-    }
-
-    &__nav {
-      display: flex;
-      gap: var(--space-8);
-      padding: var(--space-16);
-      border-top: var(--border-width-thin) solid var(--color-border);
-
-      button {
-        flex: 1;
-        padding: var(--space-12);
-        background: transparent;
-        color: var(--color-text);
-        border: var(--border-width-thin) solid var(--color-border);
-        border-radius: var(--border-radius-medium);
-        cursor: pointer;
-        transition: all var(--transition-normal) var(--easing-default);
-
-        &.active {
-          background: var(--color-accent);
-          border-color: var(--color-accent);
-        }
-
-        &:hover:not(.active) {
-          background: var(--color-hover-bg);
-          border-color: var(--color-border-hover);
-        }
-
-        &:active {
-          transform: scale(0.98);
-        }
-      }
     }
   }
 
@@ -214,23 +171,27 @@
     }
   }
 
-  .btn-signout {
-    padding: var(--space-8) var(--space-16);
+  .btn-menu {
+    padding: var(--space-8);
     background: transparent;
+    border: none;
     color: var(--color-text);
-    border: var(--border-width-thin) solid var(--color-border);
-    border-radius: var(--border-radius-medium);
-    font-size: var(--font-size-xs);
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     transition: all var(--transition-fast) var(--easing-default);
 
+    svg {
+      display: block;
+    }
+
     &:hover {
-      background: var(--color-hover-bg);
-      border-color: var(--color-border-hover);
+      transform: scale(1.1);
     }
 
     &:active {
-      transform: scale(0.98);
+      transform: scale(0.95);
     }
   }
 
