@@ -19,7 +19,9 @@ Application mobile-first PWA (iPhone 12 mini) pour tracker des métriques quotid
 - Système d'objectifs progressifs "Blue Lock" (atteignables court terme)
 - Stockage historique complet Firebase (analyse future)
 - PWA installable sur écran d'accueil iPhone
-- Design minimaliste, langage non-jugeant
+- Design minimaliste Apple Health style (chiffres mis en avant, 4 couleurs max)
+- Click-to-edit UX (modal pour tous contrôles)
+- Langage non-jugeant
 - Offline-first avec sync automatique
 
 ## 🏗️ Architecture Technique
@@ -35,11 +37,12 @@ Application mobile-first PWA (iPhone 12 mini) pour tracker des métriques quotid
 - **PWA:** Service Worker + Manifest
 - **Deploy:** Vercel
 
-### Thème
+### Thème (Palette Minimaliste)
 
-- **Background:** `#ca3c66` (rose)
+- **Primary:** `#ca3c66` (rose - background)
 - **Text:** `#ffffff` (blanc)
-- **Accent:** `#ff6b9d` (rose clair, dérivé)
+- **Accent:** `#ff6b9d` (rose clair - actions, hover)
+- **Success:** `#3ccaa0` (turquoise - goal reached)
 
 ### Unités de Mesure
 
@@ -77,10 +80,11 @@ html {
 │   └── generate-icons.js          # SVG to PNG converter
 ├── src/
 │   ├── components/
-│   │   ├── MetricDeepWork.svelte     # compteur heures + objectif
-│   │   ├── MetricSleep.svelte        # levé/couché/sieste + objectif
-│   │   ├── MetricProjects.svelte     # format X/Y avec alertes
-│   │   ├── MetricProgress.svelte     # barre % ts-barnum
+│   │   ├── MetricDeepWork.svelte     # compteur heures + objectif (modal)
+│   │   ├── MetricSleep.svelte        # levé/couché/sieste + objectif (modal)
+│   │   ├── MetricProjects.svelte     # format X/Y avec alertes (modal)
+│   │   ├── MetricProgress.svelte     # % ts-barnum (modal)
+│   │   ├── Modal.svelte              # composant modal générique réutilisable
 │   │   ├── WeeklyChart.svelte        # graphiques Chart.js
 │   │   ├── RoadmapModal.svelte       # milestones ts-barnum
 │   │   ├── PullToRefresh.svelte      # pull-to-refresh natif
@@ -218,9 +222,23 @@ users/{userId}/
 - [x] Profil utilisateur dans drawer
 - [x] Désactivation du zoom (comportement natif)
 - [x] Optimisation espace écran
+- [x] Layout vertical métriques (value en haut, title en bas)
+- [x] Value agrandie à 40px (--font-size-xxl) type Apple Health
+- [x] Title discrète (14px, opacité 0.5)
+- [x] Suppression emojis dans titres métriques
+- [x] Palette minimaliste (4 couleurs : primary, text, accent, success)
+- [x] Modal pattern généralisé pour tous contrôles
+- [x] Click-to-edit UX (toute la rangée métrique cliquable)
+- [x] Chemins imports uniformisés (@components, @stores)
+- [x] Component Modal.svelte générique réutilisable
+- [x] Hauteurs métriques uniformisées (min-height: 9.6rem + 4rem pour values)
+- [x] Grille métriques centrée verticalement sur écran
+- [x] Modal plein écran sans overlay ni animations
+- [x] Suppression effets bounce sur boutons métriques
+- [x] Objectifs affichés dans titres (format: "DW (1h)", "sommeil (05:30)")
 
 **TOTAL ESTIMÉ: 8-11h de développement**
-**TEMPS RÉALISÉ: ~10h (Toutes les phases complètes + UX améliorations! 🎉)**
+**TEMPS RÉALISÉ: ~11h (Toutes les phases complètes + UX minimaliste native! 🎉)**
 
 ## 📋 TODO List Détaillée
 
@@ -850,5 +868,5 @@ Projet personnel - Usage libre
 
 ---
 
-**Dernière mise à jour:** 2026-01-15
-**Version:** 1.1.0 (feature complete + UX native - production ready 🎉)
+**Dernière mise à jour:** 2026-01-19
+**Version:** 1.2.0 (feature complete + UX minimaliste Apple Health style - production ready 🎉)

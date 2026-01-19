@@ -117,22 +117,23 @@
     &__main {
       flex: 1;
       padding: var(--space-16);
+      padding-block-start: unset;
     }
   }
 
   .home {
     max-width: var(--max-width-container);
     margin-inline: auto;
+    min-height: calc(100vh - var(--space-16) * 2 - 5.6rem); // 100vh - padding - header height
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .metrics-grid {
-    display: grid;
-    gap: var(--space-16);
-    grid-template-columns: 1fr;
-
-    @media (min-width: 768px) {
-      grid-template-columns: repeat(2, 1fr);
-    }
+    display: flex;
+    flex-direction: column;
+    gap: 0;
   }
 
   .signin-prompt {

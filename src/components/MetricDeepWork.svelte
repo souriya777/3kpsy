@@ -6,11 +6,13 @@
    */
 
   import { dailyMetrics, saveDailyMetrics } from '@stores/metrics';
+  import Modal from '@components/Modal.svelte';
 
   /**
    * @type {{ onChange?: () => void }}
    */
   let { onChange = () => {} } = $props();
+  let showModal = $state(false);
 
   // increment deep work by 0.5h
   function increment() {
@@ -40,18 +42,17 @@
   let isGoalReached = $derived($dailyMetrics.deepWork >= $dailyMetrics.deepWorkGoal);
 </script>
 
-<div class="metric-card" class:goal-reached={isGoalReached}>
-  <div class="metric-card__header">
-    <h3 class="metric-card__title">Deep Work</h3>
-    <span class="metric-card__icon">🧠</span>
-  </div>
+<div class="metric" class:goal-reached={isGoalReached}>
+  <button class="metric__row" onclick={() => showModal = true}>
+    <div class="metric__value">
+      <span class="value" class:goal-reached={isGoalReached}>{$dailyMetrics.deepWork.toFixed(1)}h</span>
+    </div>
+    <h3 class="metric__title">DW ({$dailyMetrics.deepWorkGoal}h)</h3>
+  </button>
+</div>
 
-  <div class="metric-card__value">
-    <span class="value">{$dailyMetrics.deepWork.toFixed(1)}h</span>
-    <span class="goal">/ {$dailyMetrics.deepWorkGoal}h</span>
-  </div>
-
-  <div class="metric-card__actions">
+<Modal bind:isOpen={showModal} title="Deep Work">
+  <div class="modal-actions">
     <button
       class="btn btn--decrement"
       onclick={decrement}
@@ -69,94 +70,67 @@
       +0.5h
     </button>
   </div>
-
-  {#if isGoalReached}
-    <div class="metric-card__badge">
-      ✨ Objectif atteint !
-    </div>
-  {/if}
-</div>
+</Modal>
 
 <style lang="scss">
-  .metric-card {
-    background: rgba(var(--color-white-rgb), 0.05);
-    border: var(--border-width-thin) solid var(--color-border);
-    border-radius: var(--border-radius-large);
-    padding: var(--space-24);
-    transition: all var(--transition-normal) var(--easing-default);
-
-    &:hover {
-      background: rgba(var(--color-white-rgb), 0.08);
-      border-color: var(--color-border-hover);
-      transform: translateY(-2px);
-      box-shadow: var(--shadow-medium);
-    }
+  .metric {
+    padding: var(--space-16);
+    min-height: 9.6rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 
     &.goal-reached {
-      border-color: var(--color-success);
-      background: rgba(76, 175, 80, 0.1);
+      background: rgba(76, 175, 80, 0.05);
     }
 
-    &__header {
+    &__row {
       display: flex;
-      justify-content: space-between;
+      flex-direction: column;
       align-items: center;
-      margin-block-end: var(--space-16);
+      gap: var(--space-8);
+      width: 100%;
+      background: none;
+      border: none;
+      padding: 0;
+      cursor: pointer;
     }
 
     &__title {
-      font-size: var(--font-size-s);
+      font-size: var(--font-size-xs);
       font-weight: var(--font-weight-medium);
       margin: 0;
-    }
-
-    &__icon {
-      font-size: 2.4rem;
+      color: rgba(var(--color-white-rgb), 0.5);
     }
 
     &__value {
-      display: flex;
-      align-items: baseline;
-      gap: var(--space-8);
-      margin-block-end: var(--space-20);
-
       .value {
-        font-size: 4.8rem;
+        font-size: var(--font-size-xxl);
         font-weight: var(--font-weight-bold);
         line-height: 1;
+        color: var(--color-text);
+        transition: color var(--transition-fast) var(--easing-default);
+
+        &.goal-reached {
+          color: var(--color-success);
+        }
       }
-
-      .goal {
-        font-size: var(--font-size-s);
-        color: rgba(var(--color-white-rgb), 0.6);
-      }
-    }
-
-    &__actions {
-      display: flex;
-      gap: var(--space-12);
-    }
-
-    &__badge {
-      margin-block-start: var(--space-16);
-      padding: var(--space-8) var(--space-16);
-      background: var(--color-success);
-      border-radius: var(--border-radius-pill);
-      text-align: center;
-      font-size: var(--font-size-xs);
-      font-weight: var(--font-weight-medium);
-      animation: fadeIn var(--transition-normal) var(--easing-default);
     }
   }
 
+  .modal-actions {
+    display: flex;
+    gap: var(--space-12);
+    justify-content: center;
+  }
+
   .btn {
-    flex: 1;
-    padding: var(--space-12) var(--space-16);
+    padding: var(--space-8) var(--space-12);
     background: rgba(var(--color-white-rgb), 0.1);
     color: var(--color-text);
     border: var(--border-width-thin) solid var(--color-border);
     border-radius: var(--border-radius-medium);
-    font-size: var(--font-size-s);
+    font-size: var(--font-size-xs);
     font-weight: var(--font-weight-medium);
     cursor: pointer;
     transition: all var(--transition-fast) var(--easing-default);
@@ -183,17 +157,6 @@
       &:hover:not(:disabled) {
         background: rgba(var(--color-accent), 0.3);
       }
-    }
-  }
-
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(-1rem);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
     }
   }
 </style>

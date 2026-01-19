@@ -7,11 +7,13 @@
    */
 
   import { dailyMetrics, saveDailyMetrics } from '@stores/metrics';
+  import Modal from '@components/Modal.svelte';
 
   /**
    * @type {{ onChange?: () => void }}
    */
   let { onChange = () => {} } = $props();
+  let showModal = $state(false);
 
   // increment progress by 5%
   function incrementProgress() {
@@ -41,18 +43,23 @@
   const isCompleted = $derived($dailyMetrics.tsBarnum >= 100);
 </script>
 
-<div class="metric-card" class:completed={isCompleted}>
-  <h3 class="metric-card__title">ts-barnum</h3>
+<div class="metric" class:completed={isCompleted}>
+  <button class="metric__row" onclick={() => showModal = true}>
+    <div class="metric__value">
+      <span class="value">{$dailyMetrics.tsBarnum}%</span>
+    </div>
+    <h3 class="metric__title">ts-barnum</h3>
+  </button>
 
-  <div class="metric-card__value">
-    <span class="value">{$dailyMetrics.tsBarnum}%</span>
-  </div>
+  {#if isCompleted}
+    <div class="metric__badge">
+      🎉 Projet terminé !
+    </div>
+  {/if}
+</div>
 
-  <div class="progress-bar">
-    <div class="progress-bar__fill" style="width: {$dailyMetrics.tsBarnum}%"></div>
-  </div>
-
-  <div class="metric-card__controls">
+<Modal bind:isOpen={showModal} title="ts-barnum">
+  <div class="modal-actions">
     <button
       class="btn btn--decrement"
       onclick={decrementProgress}
@@ -70,62 +77,57 @@
       +5%
     </button>
   </div>
-
-  {#if isCompleted}
-    <div class="metric-card__badge">
-      🎉 Projet terminé !
-    </div>
-  {/if}
-</div>
+</Modal>
 
 <style lang="scss">
-  .metric-card {
-    background: rgba(var(--color-white-rgb), 0.05);
-    border: var(--border-width-thin) solid var(--color-border);
-    border-radius: var(--border-radius-large);
-    padding: var(--space-24);
-    transition: all var(--transition-normal) var(--easing-default);
-
-    &:hover {
-      background: rgba(var(--color-white-rgb), 0.08);
-      border-color: var(--color-border-hover);
-      transform: translateY(-2px);
-      box-shadow: var(--shadow-medium);
-    }
+  .metric {
+    padding: var(--space-16);
+    min-height: 9.6rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 
     &.completed {
-      border-color: var(--color-success);
-      background: rgba(76, 175, 80, 0.1);
+      background: rgba(76, 175, 80, 0.05);
+    }
+
+    &__row {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-8);
+      width: 100%;
+      background: none;
+      border: none;
+      padding: 0;
+      cursor: pointer;
     }
 
     &__title {
-      font-size: var(--font-size-s);
+      font-size: var(--font-size-xs);
       font-weight: var(--font-weight-medium);
-      margin: 0 0 var(--space-16) 0;
+      margin: 0;
       font-family: monospace;
+      color: rgba(var(--color-white-rgb), 0.5);
     }
 
     &__value {
+      min-height: 4rem;
       display: flex;
+      align-items: center;
       justify-content: center;
-      margin-block-end: var(--space-16);
 
       .value {
-        font-size: var(--font-size-xxxl);
+        font-size: var(--font-size-xxl);
         font-weight: var(--font-weight-bold);
-        color: var(--color-accent);
+        color: var(--color-text);
+        line-height: 1;
       }
     }
 
-    &__controls {
-      display: flex;
-      gap: var(--space-12);
-      margin-block-start: var(--space-16);
-    }
-
     &__badge {
-      margin-block-start: var(--space-16);
-      padding: var(--space-12);
+      margin-block-start: var(--space-12);
+      padding: var(--space-8) var(--space-12);
       background: var(--color-success);
       border-radius: var(--border-radius-pill);
       text-align: center;
@@ -135,47 +137,19 @@
     }
   }
 
-  .progress-bar {
-    width: 100%;
-    height: 1.2rem;
-    background: rgba(var(--color-white-rgb), 0.1);
-    border-radius: var(--border-radius-pill);
-    overflow: hidden;
-    position: relative;
-
-    &__fill {
-      height: 100%;
-      background: linear-gradient(90deg, var(--color-accent), var(--color-success));
-      border-radius: var(--border-radius-pill);
-      transition: width var(--transition-normal) var(--easing-default);
-      position: relative;
-
-      &::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: linear-gradient(
-          90deg,
-          rgba(255, 255, 255, 0) 0%,
-          rgba(255, 255, 255, 0.3) 50%,
-          rgba(255, 255, 255, 0) 100%
-        );
-        animation: shimmer 2s infinite;
-      }
-    }
+  .modal-actions {
+    display: flex;
+    gap: var(--space-12);
+    justify-content: center;
   }
 
   .btn {
-    flex: 1;
-    padding: var(--space-12) var(--space-16);
+    padding: var(--space-8) var(--space-12);
     background: rgba(var(--color-white-rgb), 0.1);
     color: var(--color-text);
     border: var(--border-width-thin) solid var(--color-border);
     border-radius: var(--border-radius-medium);
-    font-size: var(--font-size-s);
+    font-size: var(--font-size-xs);
     font-weight: var(--font-weight-medium);
     cursor: pointer;
     transition: all var(--transition-fast) var(--easing-default);
@@ -213,15 +187,6 @@
     to {
       opacity: 1;
       transform: translateY(0);
-    }
-  }
-
-  @keyframes shimmer {
-    0% {
-      transform: translateX(-100%);
-    }
-    100% {
-      transform: translateX(100%);
     }
   }
 </style>
