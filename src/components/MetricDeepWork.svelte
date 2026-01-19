@@ -40,18 +40,16 @@
   let isGoalReached = $derived($dailyMetrics.deepWork >= $dailyMetrics.deepWorkGoal);
 </script>
 
-<div class="metric-card" class:goal-reached={isGoalReached}>
-  <div class="metric-card__header">
-    <h3 class="metric-card__title">Deep Work</h3>
-    <span class="metric-card__icon">🧠</span>
+<div class="metric" class:goal-reached={isGoalReached}>
+  <div class="metric__row">
+    <h3 class="metric__title">🧠 DW</h3>
+    <div class="metric__value">
+      <span class="value" class:goal-reached={isGoalReached}>{$dailyMetrics.deepWork.toFixed(1)}h</span>
+      <span class="goal">/ {$dailyMetrics.deepWorkGoal}h</span>
+    </div>
   </div>
 
-  <div class="metric-card__value">
-    <span class="value">{$dailyMetrics.deepWork.toFixed(1)}h</span>
-    <span class="goal">/ {$dailyMetrics.deepWorkGoal}h</span>
-  </div>
-
-  <div class="metric-card__actions">
+  <div class="metric__actions">
     <button
       class="btn btn--decrement"
       onclick={decrement}
@@ -69,94 +67,66 @@
       +0.5h
     </button>
   </div>
-
-  {#if isGoalReached}
-    <div class="metric-card__badge">
-      ✨ Objectif atteint !
-    </div>
-  {/if}
 </div>
 
 <style lang="scss">
-  .metric-card {
-    background: rgba(var(--color-white-rgb), 0.05);
-    border: var(--border-width-thin) solid var(--color-border);
-    border-radius: var(--border-radius-large);
-    padding: var(--space-24);
-    transition: all var(--transition-normal) var(--easing-default);
-
-    &:hover {
-      background: rgba(var(--color-white-rgb), 0.08);
-      border-color: var(--color-border-hover);
-      transform: translateY(-2px);
-      box-shadow: var(--shadow-medium);
-    }
+  .metric {
+    padding: var(--space-16);
+    border-bottom: 1px solid rgba(var(--color-white-rgb), 0.1);
 
     &.goal-reached {
-      border-color: var(--color-success);
-      background: rgba(76, 175, 80, 0.1);
+      background: rgba(76, 175, 80, 0.05);
     }
 
-    &__header {
+    &__row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-block-end: var(--space-16);
+      margin-block-end: var(--space-12);
     }
 
     &__title {
       font-size: var(--font-size-s);
       font-weight: var(--font-weight-medium);
       margin: 0;
-    }
-
-    &__icon {
-      font-size: 2.4rem;
+      color: rgba(var(--color-white-rgb), 0.7);
     }
 
     &__value {
       display: flex;
       align-items: baseline;
-      gap: var(--space-8);
-      margin-block-end: var(--space-20);
+      gap: var(--space-4);
 
       .value {
-        font-size: 4.8rem;
+        font-size: var(--font-size-xl);
         font-weight: var(--font-weight-bold);
         line-height: 1;
+        transition: color var(--transition-fast) var(--easing-default);
+
+        &.goal-reached {
+          color: var(--color-success);
+        }
       }
 
       .goal {
-        font-size: var(--font-size-s);
-        color: rgba(var(--color-white-rgb), 0.6);
+        font-size: var(--font-size-xs);
+        color: rgba(var(--color-white-rgb), 0.5);
       }
     }
 
     &__actions {
       display: flex;
-      gap: var(--space-12);
-    }
-
-    &__badge {
-      margin-block-start: var(--space-16);
-      padding: var(--space-8) var(--space-16);
-      background: var(--color-success);
-      border-radius: var(--border-radius-pill);
-      text-align: center;
-      font-size: var(--font-size-xs);
-      font-weight: var(--font-weight-medium);
-      animation: fadeIn var(--transition-normal) var(--easing-default);
+      gap: var(--space-8);
     }
   }
 
   .btn {
-    flex: 1;
-    padding: var(--space-12) var(--space-16);
+    padding: var(--space-8) var(--space-12);
     background: rgba(var(--color-white-rgb), 0.1);
     color: var(--color-text);
     border: var(--border-width-thin) solid var(--color-border);
     border-radius: var(--border-radius-medium);
-    font-size: var(--font-size-s);
+    font-size: var(--font-size-xs);
     font-weight: var(--font-weight-medium);
     cursor: pointer;
     transition: all var(--transition-fast) var(--easing-default);
@@ -183,17 +153,6 @@
       &:hover:not(:disabled) {
         background: rgba(var(--color-accent), 0.3);
       }
-    }
-  }
-
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(-1rem);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
     }
   }
 </style>

@@ -64,21 +64,19 @@
   });
 </script>
 
-<div class="metric-card" class:alert={hasGapAlert()}>
-  <div class="metric-card__header">
-    <h3 class="metric-card__title">Projets</h3>
-    <span class="metric-card__icon">📊</span>
+<div class="metric" class:alert={hasGapAlert()}>
+  <div class="metric__row">
+    <h3 class="metric__title">📊 projets</h3>
+    <div class="metric__value">
+      <span class="value">
+        {$projectsMetrics.completed} / {$projectsMetrics.inProgress}
+      </span>
+    </div>
   </div>
 
-  <div class="metric-card__value">
-    <span class="value">
-      {$projectsMetrics.completed} / {$projectsMetrics.inProgress}
-    </span>
-  </div>
-
-  <div class="metric-card__controls">
+  <div class="metric__controls">
     <div class="control-group">
-      <label>Terminés</label>
+      <label>terminés</label>
       <div class="buttons">
         <button
           class="btn btn--small"
@@ -99,7 +97,7 @@
     </div>
 
     <div class="control-group">
-      <label>En cours</label>
+      <label>en cours</label>
       <div class="buttons">
         <button
           class="btn btn--small"
@@ -121,56 +119,38 @@
   </div>
 
   {#if hasGapAlert()}
-    <div class="metric-card__alert">
+    <div class="metric__alert">
       ⚠️ Écart > 2 : Terminer des projets en cours
     </div>
   {/if}
 </div>
 
 <style lang="scss">
-  .metric-card {
-    background: rgba(var(--color-white-rgb), 0.05);
-    border: var(--border-width-thin) solid var(--color-border);
-    border-radius: var(--border-radius-large);
-    padding: var(--space-24);
-    transition: all var(--transition-normal) var(--easing-default);
-
-    &:hover {
-      background: rgba(var(--color-white-rgb), 0.08);
-      border-color: var(--color-border-hover);
-      transform: translateY(-2px);
-      box-shadow: var(--shadow-medium);
-    }
+  .metric {
+    padding: var(--space-16);
+    border-bottom: 1px solid rgba(var(--color-white-rgb), 0.1);
 
     &.alert {
-      border-color: var(--color-warning);
-      background: rgba(255, 152, 0, 0.1);
+      background: rgba(255, 152, 0, 0.05);
     }
 
-    &__header {
+    &__row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-block-end: var(--space-16);
+      margin-block-end: var(--space-12);
     }
 
     &__title {
       font-size: var(--font-size-s);
       font-weight: var(--font-weight-medium);
       margin: 0;
-    }
-
-    &__icon {
-      font-size: 2.4rem;
+      color: rgba(var(--color-white-rgb), 0.7);
     }
 
     &__value {
-      display: flex;
-      justify-content: center;
-      margin-block-end: var(--space-20);
-
       .value {
-        font-size: var(--font-size-xxxl);
+        font-size: var(--font-size-xl);
         font-weight: var(--font-weight-bold);
         color: var(--color-text);
       }
@@ -178,13 +158,13 @@
 
     &__controls {
       display: flex;
-      flex-direction: column;
+      flex-direction: row;
       gap: var(--space-12);
     }
 
     &__alert {
-      margin-block-start: var(--space-16);
-      padding: var(--space-12);
+      margin-block-start: var(--space-12);
+      padding: var(--space-8) var(--space-12);
       background: rgba(255, 152, 0, 0.2);
       border: var(--border-width-thin) solid var(--color-warning);
       border-radius: var(--border-radius-medium);
@@ -197,9 +177,10 @@
 
   .control-group {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--space-12);
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-8);
+    flex: 1;
 
     label {
       font-size: var(--font-size-xs);
@@ -209,17 +190,18 @@
 
     .buttons {
       display: flex;
-      gap: var(--space-8);
+      gap: var(--space-4);
+      width: 100%;
     }
   }
 
   .btn {
-    padding: var(--space-12) var(--space-16);
+    padding: var(--space-8) var(--space-12);
     background: rgba(var(--color-white-rgb), 0.1);
     color: var(--color-text);
     border: var(--border-width-thin) solid var(--color-border);
     border-radius: var(--border-radius-medium);
-    font-size: var(--font-size-s);
+    font-size: var(--font-size-xs);
     font-weight: var(--font-weight-medium);
     cursor: pointer;
     transition: all var(--transition-fast) var(--easing-default);
@@ -240,7 +222,13 @@
     }
 
     &--small {
-      min-width: 4rem;
+      min-width: 3.2rem;
+      width: 3.2rem;
+      height: 3.2rem;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     &--increment {

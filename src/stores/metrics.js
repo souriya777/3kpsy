@@ -33,7 +33,7 @@ const dailyMetrics = writable({
   wakeUp: '07:00',
   sleep: '23:00',
   nap: false,
-  wakeUpGoal: '07:00',
+  wakeUpGoal: '05:30',
   tsBarnum: 0,
   timestamp: new Date().toISOString()
 });

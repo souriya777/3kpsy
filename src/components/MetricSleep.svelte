@@ -50,97 +50,93 @@
   });
 </script>
 
-<div class="metric-card">
-  <div class="metric-card__header">
-    <h3 class="metric-card__title">Sommeil</h3>
-    <span class="metric-card__icon">😴</span>
+<div class="metric">
+  <div class="metric__header">
+    <h3 class="metric__title">
+      😴 sleep ({$dailyMetrics.wakeUpGoal})
+      {#if isWakeUpGoalReached()}
+        <span class="goal-badge">🎯</span>
+      {/if}
+    </h3>
   </div>
 
-  <div class="metric-card__fields">
-    <div class="field">
-      <label for="wakeup">
-        Levé
-        {#if isWakeUpGoalReached()}
-          <span class="goal-badge">🎯</span>
-        {/if}
-      </label>
-      <input
-        id="wakeup"
-        type="time"
-        value={$dailyMetrics.wakeUp}
-        oninput={updateWakeUp}
-        class:goal-reached={isWakeUpGoalReached()}
-      />
-      <span class="goal-hint">Objectif: {$dailyMetrics.wakeUpGoal}</span>
-    </div>
+  <div class="metric__fields">
+    <div class="field-row">
+      <div class="field field--time">
+        <label for="wakeup">Levé</label>
+        <input
+          id="wakeup"
+          type="time"
+          value={$dailyMetrics.wakeUp}
+          oninput={updateWakeUp}
+          class:goal-reached={isWakeUpGoalReached()}
+        />
+      </div>
 
-    <div class="field">
-      <label for="sleep">Couché</label>
-      <input
-        id="sleep"
-        type="time"
-        value={$dailyMetrics.sleep}
-        oninput={updateSleep}
-      />
+      <div class="field field--time">
+        <label for="sleep">Couché</label>
+        <input
+          id="sleep"
+          type="time"
+          value={$dailyMetrics.sleep}
+          oninput={updateSleep}
+        />
+      </div>
     </div>
 
     <div class="field field--nap">
-      <label>Sieste</label>
-      <button
-        class="btn-toggle"
-        class:active={$dailyMetrics.nap}
-        onclick={toggleNap}
-        aria-label="toggle nap status"
-      >
-        {$dailyMetrics.nap ? 'Oui' : 'Non'}
-      </button>
+      <label for="nap" class="checkbox-label">
+        <input
+          id="nap"
+          type="checkbox"
+          checked={$dailyMetrics.nap}
+          onchange={toggleNap}
+        />
+        <span>Sieste</span>
+      </label>
     </div>
   </div>
 </div>
 
 <style lang="scss">
-  .metric-card {
-    background: rgba(var(--color-white-rgb), 0.05);
-    border: var(--border-width-thin) solid var(--color-border);
-    border-radius: var(--border-radius-large);
-    padding: var(--space-24);
-    transition: all var(--transition-normal) var(--easing-default);
-
-    &:hover {
-      background: rgba(var(--color-white-rgb), 0.08);
-      border-color: var(--color-border-hover);
-      transform: translateY(-2px);
-      box-shadow: var(--shadow-medium);
-    }
+  .metric {
+    padding: var(--space-16);
+    border-bottom: 1px solid rgba(var(--color-white-rgb), 0.1);
 
     &__header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-block-end: var(--space-20);
+      margin-block-end: var(--space-12);
     }
 
     &__title {
       font-size: var(--font-size-s);
       font-weight: var(--font-weight-medium);
       margin: 0;
-    }
-
-    &__icon {
-      font-size: 2.4rem;
+      color: rgba(var(--color-white-rgb), 0.7);
     }
 
     &__fields {
       display: flex;
       flex-direction: column;
-      gap: var(--space-16);
+      gap: var(--space-12);
     }
+  }
+
+  .field-row {
+    display: flex;
+    gap: var(--space-12);
   }
 
   .field {
     display: flex;
     flex-direction: column;
     gap: var(--space-8);
+
+    &--time {
+      flex: 1;
+    }
 
     label {
       font-size: var(--font-size-xs);
@@ -153,12 +149,6 @@
 
     .goal-badge {
       font-size: var(--font-size-xs);
-    }
-
-    .goal-hint {
-      font-size: var(--font-size-xs);
-      color: rgba(var(--color-white-rgb), 0.5);
-      font-style: italic;
     }
 
     input[type="time"] {
@@ -189,37 +179,50 @@
     }
 
     &--nap {
-      flex-direction: row;
-      align-items: center;
-      justify-content: space-between;
+      margin: 0;
     }
   }
 
-  .btn-toggle {
-    padding: var(--space-8) var(--space-20);
-    background: rgba(var(--color-white-rgb), 0.1);
-    color: var(--color-text);
-    border: var(--border-width-thin) solid var(--color-border);
-    border-radius: var(--border-radius-medium);
-    font-size: var(--font-size-s);
-    font-weight: var(--font-weight-medium);
+  .checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: var(--space-8);
     cursor: pointer;
-    transition: all var(--transition-fast) var(--easing-default);
-    min-width: 6rem;
+    font-size: var(--font-size-s);
+    color: rgba(var(--color-white-rgb), 0.8);
+    font-weight: var(--font-weight-medium);
 
-    &:hover {
-      background: rgba(var(--color-white-rgb), 0.15);
-      border-color: var(--color-border-hover);
+    input[type="checkbox"] {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 2rem;
+      height: 2rem;
+      cursor: pointer;
+      background: rgba(var(--color-white-rgb), 0.1);
+      border: var(--border-width-thin) solid var(--color-border);
+      border-radius: var(--border-radius-small);
+      position: relative;
+      transition: all var(--transition-fast) var(--easing-default);
+
+      &:checked {
+        background: rgba(var(--color-accent), 0.2);
+        border-color: var(--color-accent);
+      }
+
+      &:checked::after {
+        content: '✓';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: var(--color-text);
+        font-size: 1.4rem;
+        font-weight: var(--font-weight-bold);
+      }
     }
 
-    &:active {
-      transform: scale(0.98);
-    }
-
-    &.active {
-      background: rgba(var(--color-success-rgb), 0.2);
-      border-color: var(--color-success);
-      color: var(--color-success);
+    span {
+      user-select: none;
     }
   }
 </style>

@@ -126,13 +126,9 @@
   }
 
   .metrics-grid {
-    display: grid;
-    gap: var(--space-16);
-    grid-template-columns: 1fr;
-
-    @media (min-width: 768px) {
-      grid-template-columns: repeat(2, 1fr);
-    }
+    display: flex;
+    flex-direction: column;
+    gap: 0;
   }
 
   .signin-prompt {
